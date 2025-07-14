@@ -1,21 +1,24 @@
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useState } from "react";
+import { signIn } from "@/services/services";
 
 const SignInForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (event: Event) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     const data = {
       username: username,
-      passworld: password,
+      password: password,
     };
-    console.log(data);
+    // console.log(data);
+    const resData = await signIn(data);
+    console.log(resData);
   };
   return (
-    <form onClick={handleSubmit}>
+    <form onSubmit={handleSubmit}>
       <Input
         type="text"
         name="username"
@@ -30,7 +33,9 @@ const SignInForm = () => {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <Button variant="secondary">Sign In</Button>
+      <Button type="submit" variant="secondary">
+        Sign In
+      </Button>
     </form>
   );
 };
