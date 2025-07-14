@@ -3,6 +3,8 @@ import { Button } from "../ui/button";
 import { useState } from "react";
 import { signIn } from "@/services/services";
 
+import { saveTokenToLocalStorage } from "@/utils/tokenHandler";
+
 const SignInForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -14,8 +16,8 @@ const SignInForm = () => {
       password: password,
     };
     // console.log(data);
-    const resData = await signIn(data);
-    console.log(resData);
+    const { user, token } = await signIn(data);
+    saveTokenToLocalStorage(token);
   };
   return (
     <form onSubmit={handleSubmit}>
