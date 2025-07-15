@@ -3,7 +3,7 @@ import { logout } from "@/utils/LogOut";
 import { useContext } from "react";
 import { UserContext } from "@/contexts/UserContext";
 
-import { SheetDemo } from "../SalesInput/SalesInput";
+import { InputSalesSheet } from "../SalesInput/SalesInput";
 import { Link, useNavigate } from "react-router";
 import {
   NavigationMenu,
@@ -73,7 +73,7 @@ const NavBar = () => {
             </button>
           </NavigationMenuLink>
         </NavigationMenuItem>
-        <SheetDemo open={showSheet} onOpenChange={setShowSheet} />
+        <InputSalesSheet open={showSheet} onOpenChange={setShowSheet} />
       </NavigationMenuList>
     </NavigationMenu>
   );

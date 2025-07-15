@@ -17,10 +17,15 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-
 import { useState } from "react";
 
-export function SheetDemo({ open, onOpenChange }) {
+const InputSalesSheet = ({
+  open,
+  onOpenChange,
+}: {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}) => {
   const [openCal, setOpenCal] = useState(false);
   const [date, setDate] = useState<Date | undefined>(undefined);
   return (
@@ -81,4 +86,6 @@ export function SheetDemo({ open, onOpenChange }) {
       </SheetContent>
     </Sheet>
   );
-}
+};
+
+export { InputSalesSheet };
