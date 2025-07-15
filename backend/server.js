@@ -13,6 +13,7 @@ const mongoose = require("mongoose");
 
 // Import Routers
 const publicRouter = require("./routes/publicRoutes");
+const hierarchyRouter = require("./routes/hierarchyRoutes");
 
 // Connection to MongoDB
 mongoose.connect(process.env.MONGODB_URI);
@@ -28,6 +29,7 @@ app.use(logger("dev"));
 
 // Routes
 app.use("/api/public", publicRouter);
+app.use("/api/hierarchy", hierarchyRouter);
 
 // Listener
 app.listen(3000, () => {
