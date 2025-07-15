@@ -12,8 +12,12 @@ const signIn = async (data: object) => {
     });
     const passData = await resData.json();
     return passData;
-  } catch (err) {
-    throw new Error(`Unable to log in: ${err}`);
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      console.error("Message:", err.message);
+    } else {
+      console.error("Unknown error", err);
+    }
   }
 };
 

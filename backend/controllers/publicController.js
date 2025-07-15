@@ -4,41 +4,36 @@ const {
   isPasswordBCryptValidated,
 } = require("../utils/bcrypt");
 const { createJWT } = require("../utils/tokenHandler");
+const { signInSchema, validate } = require("../utils/validator");
 
 const signIn = async (req, res, next) => {
   try {
-    // console.log(req.body);
-    const { username, password } = req.body;
-    const oneUser = await User.findOne({ username: username }).select(
-      "username password"
+    const { username, password } = validate(signInSchema, req.body);
+
+    const user = await User.findOne({ username }).select(
+      "_id username password firstName"
     );
 
-    // Password & Username checkers
-    if (!oneUser || !isPasswordBCryptValidated(password, oneUser.password)) {
-      //   throw new ApiError({
-      //     status: 400,
-      //     source: { pointer: "publicController.js" },
-      //     title: "Bad Request: Wrong Login Details",
-      //     detail: "Login Failed with wrong login details.",
-      //   });
-      throw new Error("Invalid Credentials");
+    if (!user || !(await isPasswordBCryptValidated(password, user.password))) {
+      return res.status(401).json({ error: "Invalid credentials" });
     }
 
-    // Login user - with id, username, and email, createdAt
-    const userToken = await createJWT({ user: oneUser });
+    const token = await createJWT({ user });
 
-    if (!userToken) {
-      //   throw new ApiError({
-      //     status: 503,
-      //     source: { pointer: "publicController.js" },
-      //     title: "Service Unavailable: Token Generation",
-      //     detail: "Server having issue generating token.",
-      //   });
-      throw new Error("Server unable to issue token");
+    if (!token) {
+      return res.status(503).json({ error: "Server unable to issue token" });
     }
 
-    res.status(200).json({ user: oneUser, token: userToken });
+    const { _id, email, createdAt, firstName } = user;
+
+    return res.status(200).json({
+      user: { _id, username, email, firstName, createdAt },
+      token,
+    });
   } catch (err) {
+    if (err.statusCode === 400) {
+      return res.status(400).json({ errors: err.details });
+    }
     next(err);
   }
 };

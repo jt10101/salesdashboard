@@ -1,15 +1,19 @@
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { useState } from "react";
-import { signIn } from "@/services/signInService";
 import { toast } from "sonner";
+
+import { useState } from "react";
 import { useNavigate } from "react-router";
 
+import { useContext } from "react";
+import { UserContext } from "@/contexts/UserContext";
+import { signIn } from "@/services/signInService";
 import { saveTokenToLocalStorage } from "@/utils/tokenHandler";
 
 const SignInForm = () => {
   const [inputUsername, setUsername] = useState("");
   const [inputPassword, setPassword] = useState("");
+  const { setUser } = useContext(UserContext);
 
   const navigate = useNavigate();
 
@@ -19,15 +23,18 @@ const SignInForm = () => {
       username: inputUsername,
       password: inputPassword,
     };
+
     try {
       const { user, token } = await signIn(data);
-      saveTokenToLocalStorage(token);
-      toast(`Welcome ${user.username}`);
-      if (token) {
-        navigate("/dashboard");
+      if (!token || !user) {
+        throw new Error("Invalid credentials");
       }
+      saveTokenToLocalStorage(token);
+      setUser(user);
+      toast.success(`Welcome ${user.username}`);
+      navigate("/dashboard");
     } catch (err) {
-      toast(err);
+      toast.error(err instanceof Error ? err.message : "Login failed");
     }
   };
   return (
