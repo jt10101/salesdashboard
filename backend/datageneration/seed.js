@@ -14,7 +14,7 @@ const generateUsers = async () => {
       lastName: "Tham",
       role: "Supervisor",
     },
-    ...Array.from({ length: 4 }, () => ({
+    ...Array.from({ length: 20 }, () => ({
       username: faker.internet.username().toLowerCase().replaceAll(".", ""),
       email: faker.internet.email(),
       password: bcryptPassword("12345678"),
@@ -35,9 +35,16 @@ const generateUsers = async () => {
 
 const generateHierarchy = async (users) => {
   const data = users.filter((a) => a.role === "IC");
-  const hierarchyData = data.map((user) => ({
-    salesPersonId: user._id,
-  }));
+  const superdata = users.filter((a) => a.role === "Supervisor");
+
+  const hierarchyData = data.map((user) => {
+    const supervisor = superdata[Math.floor(Math.random() * superdata.length)];
+
+    return {
+      salesPersonId: user._id,
+      supervisorId: supervisor._id,
+    };
+  });
 
   try {
     await Hierarchy.deleteMany({});
