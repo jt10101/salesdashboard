@@ -2,10 +2,12 @@
 // import Link from "next/link";
 // import { CircleCheckIcon, CircleHelpIcon, CircleIcon } from "lucide-react";
 
+import { useState } from "react";
 import { logout } from "@/utils/LogOut";
 import { useContext } from "react";
 import { UserContext } from "@/contexts/UserContext";
 
+import { SheetDemo } from "../SalesInput/SalesInput";
 import { Link, useNavigate } from "react-router";
 import {
   NavigationMenu,
@@ -18,6 +20,8 @@ import {
 } from "@/components/ui/navigation-menu";
 
 const NavBar = () => {
+  const [showSheet, setShowSheet] = useState(false);
+
   const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
   const handleLogout = () => {
@@ -53,6 +57,19 @@ const NavBar = () => {
             <Link to="/role">Role Assignment</Link>
           </NavigationMenuLink>
         </NavigationMenuItem>
+
+        {/* Break for each option */}
+        <NavigationMenuItem>
+          <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+            <button
+              onClick={() => setShowSheet(true)}
+              className="w-full text-left"
+            >
+              Add Sales
+            </button>
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+
         {/* Break for each option */}
         <NavigationMenuItem>
           <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
@@ -61,6 +78,7 @@ const NavBar = () => {
             </button>
           </NavigationMenuLink>
         </NavigationMenuItem>
+        <SheetDemo open={showSheet} onOpenChange={setShowSheet} />
       </NavigationMenuList>
     </NavigationMenu>
   );

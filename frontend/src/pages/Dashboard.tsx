@@ -1,13 +1,11 @@
-import { useEffect } from "react";
-import { DemoPage } from "@/components/table/page";
+import { SheetDemo } from "@/components/SalesInput/SalesInput";
 
 const Dashboard = () => {
-  // const indexHierarchy = async () => {
-  //   try {
-  //   } catch (error) {}
-  // };
-  // useEffect(() => {}, []);
-  return <>Dashboard Page</>;
+  return (
+    <>
+      <SheetDemo />
+    </>
+  );
 };
 
 export { Dashboard };
