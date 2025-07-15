@@ -17,10 +17,10 @@ import {
 
 const NavBar = () => {
   const [showSheet, setShowSheet] = useState(false);
-  const { setUser } = useContext(UserContext);
+  const { user, setRole, setUser } = useContext(UserContext);
   const navigate = useNavigate();
   const handleLogout = () => {
-    logout({ setUser, navigate });
+    logout({ setUser, setRole, navigate });
   };
 
   return (
@@ -47,24 +47,33 @@ const NavBar = () => {
         </NavigationMenuItem>
 
         {/* Break for each option */}
-        <NavigationMenuItem>
-          <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-            <Link to="/role">Role Assignment</Link>
-          </NavigationMenuLink>
-        </NavigationMenuItem>
+        {user?.role === "Supervisor" && (
+          <NavigationMenuItem>
+            <NavigationMenuLink
+              asChild
+              className={navigationMenuTriggerStyle()}
+            >
+              <Link to="/role">Role Assignment</Link>
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+        )}
 
         {/* Break for each option */}
-        <NavigationMenuItem>
-          <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-            <button
-              onClick={() => setShowSheet(true)}
-              className="w-full text-left"
+        {user?.role === "IC" && (
+          <NavigationMenuItem>
+            <NavigationMenuLink
+              asChild
+              className={navigationMenuTriggerStyle()}
             >
-              Add Sales
-            </button>
-          </NavigationMenuLink>
-        </NavigationMenuItem>
-
+              <button
+                onClick={() => setShowSheet(true)}
+                className="w-full text-left"
+              >
+                Add Sales
+              </button>
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+        )}
         {/* Break for each option */}
         <NavigationMenuItem>
           <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
