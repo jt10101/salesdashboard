@@ -10,8 +10,19 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { ChevronDownIcon } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+
+import { useState } from "react";
 
 export function SheetDemo({ open, onOpenChange }) {
+  const [openCal, setOpenCal] = useState(false);
+  const [date, setDate] = useState<Date | undefined>(undefined);
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent>
@@ -21,9 +32,37 @@ export function SheetDemo({ open, onOpenChange }) {
         </SheetHeader>
         <div className="grid flex-1 auto-rows-min gap-6 px-4">
           <div className="grid gap-3">
-            <Label htmlFor="transactionDate">Sales Date</Label>
-            <Input id="transactiondate" defaultValue="Today" />
+            <Label htmlFor="date" className="px-1">
+              Transaction Date
+            </Label>
+            <Popover open={openCal} onOpenChange={setOpenCal}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  id="date"
+                  className="w-48 justify-between font-normal"
+                >
+                  {date ? date.toLocaleDateString() : "Select date"}
+                  <ChevronDownIcon />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent
+                className="w-auto overflow-hidden p-0"
+                align="start"
+              >
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  captionLayout="dropdown"
+                  onSelect={(date) => {
+                    setDate(date);
+                    setOpenCal(false);
+                  }}
+                />
+              </PopoverContent>
+            </Popover>
           </div>
+
           <div className="grid gap-3">
             <Label htmlFor="salesamount">Sales Amount</Label>
             <Input id="salesamount" defaultValue="250000" />
