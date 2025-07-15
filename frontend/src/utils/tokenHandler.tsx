@@ -22,13 +22,6 @@ const getInfoFromToken = (token: string) => {
     } catch (err) {
       localStorage.removeItem("token");
       console.log(err);
-      //   toast.error("Logeed Out. Could not find User");
-      //   throw new ApiError({
-      //     status: 403,
-      //     source: { pointer: "Token" },
-      //     title: err.name,
-      //     detail: "Unable to get token",
-      //   });
     }
   } else {
     // throw new ApiError({

@@ -27,7 +27,7 @@ const SignInForm = () => {
   useEffect(() => {
     if (user) {
       navigate("/dashboard");
-      toast.success(`Welcome back ${user.username}`);
+      toast.success(`Welcome, ${user.firstName}`);
     }
   }, [user, navigate]);
 
@@ -45,8 +45,6 @@ const SignInForm = () => {
       }
       saveTokenToLocalStorage(token);
       setUser(user);
-      toast.success(`Welcome ${user.username}`);
-      navigate("/dashboard");
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Login failed");
     }

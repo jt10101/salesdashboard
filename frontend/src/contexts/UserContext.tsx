@@ -1,4 +1,3 @@
-// ContextProvider encapsulated
 import { createContext, useState, useEffect } from "react";
 import {
   getInfoFromToken,
@@ -9,15 +8,26 @@ const UserContext = createContext();
 
 function UserProvider({ children }) {
   const [user, setUser] = useState(null);
-  const value = { user, setUser };
+  const [role, setRole] = useState("");
+  const value = { user, setUser, role, setRole };
 
   useEffect(() => {
     const token = getTokenFromLocalStorage();
+
     if (token) {
-      const { user } = getInfoFromToken(token);
-      setUser(user);
+      const decoded = getInfoFromToken(token);
+      const extractedUser = decoded?.user;
+
+      if (extractedUser) {
+        setUser(extractedUser);
+        setRole(extractedUser.role || "");
+      } else {
+        setUser(null);
+        setRole("");
+      }
     } else {
       setUser(null);
+      setRole("");
     }
   }, []);
 

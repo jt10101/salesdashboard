@@ -11,23 +11,19 @@ const signIn = async (req, res, next) => {
     const { username, password } = validate(signInSchema, req.body);
 
     const user = await User.findOne({ username }).select(
-      "_id username password firstName"
+      "_id username password firstName role"
     );
 
     if (!user || !(await isPasswordBCryptValidated(password, user.password))) {
       return res.status(401).json({ error: "Invalid credentials" });
     }
-
     const token = await createJWT({ user });
-
     if (!token) {
       return res.status(503).json({ error: "Server unable to issue token" });
     }
-
-    const { _id, email, createdAt, firstName } = user;
-
+    const { _id, firstName, role } = user;
     return res.status(200).json({
-      user: { _id, username, email, firstName, createdAt },
+      user: { _id, firstName, role },
       token,
     });
   } catch (err) {
