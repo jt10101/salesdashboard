@@ -9,14 +9,9 @@ export type Hierarchy = {
   supervisorName: string;
 };
 
-// Sample list of supervisor IDs for the dropdown options
-const supervisorOptions = [
-  { id: "sup1", name: "Alice Tan" },
-  { id: "sup2", name: "Bob Lim" },
-  { id: "sup3", name: "Cheryl Goh" },
-];
-
-export const columns: ColumnDef<Hierarchy>[] = [
+export const getColumns = (
+  supervisorOptions: string[]
+): ColumnDef<Hierarchy>[] => [
   {
     accessorKey: "salesPersonId",
     header: "Employee ID",
@@ -26,10 +21,6 @@ export const columns: ColumnDef<Hierarchy>[] = [
     header: "Employee Name",
   },
   {
-    accessorKey: "email",
-    header: "Email",
-  },
-  {
     accessorKey: "supervisorName",
     header: "Supervisor",
     cell: ({ row }) => {
@@ -37,13 +28,8 @@ export const columns: ColumnDef<Hierarchy>[] = [
 
       const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
         const newValue = e.target.value;
-        const selectedSupervisor = supervisorOptions.find(
-          (option) => option.id === newValue
-        );
 
-        const name = selectedSupervisor?.name || "Unknown";
-
-        toast.success(`Supervisor changed to ${name}`);
+        toast.success(`Supervisor changed to ${newValue}`);
       };
 
       return (
@@ -52,9 +38,9 @@ export const columns: ColumnDef<Hierarchy>[] = [
           onChange={handleChange}
           className="border border-gray-300 rounded p-1"
         >
-          {supervisorOptions.map((option) => (
-            <option key={option.id} value={option.id}>
-              {option.name}
+          {supervisorOptions.map((name) => (
+            <option key={name} value={name}>
+              {name}
             </option>
           ))}
         </select>

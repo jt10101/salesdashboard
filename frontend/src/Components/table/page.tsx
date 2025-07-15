@@ -1,27 +1,28 @@
-import { columns, Hierarchy } from "./columns";
+import { getColumns, Hierarchy } from "./columns";
 import { DataTable } from "./data-table";
-import { indexHierarchy } from "@/services/hierarchyServices";
+import { indexHierarchy, indexSupervisors } from "@/services/hierarchyServices";
 import { useEffect, useState } from "react";
 
 const DemoPage = () => {
   const [index, setIndex] = useState<Hierarchy[]>([]);
+  const [supervisors, setSupervisors] = useState<string[]>([]);
 
   useEffect(() => {
     const getHierarchy = async () => {
-      try {
-        const response = await indexHierarchy();
-        setIndex(response.data);
-        console.log(response.data);
-      } catch (err) {
-        console.error("Failed to fetch data", err);
-      }
+      const response = await indexHierarchy();
+      setIndex(response.data);
+    };
+    const getSupervisors = async () => {
+      const response = await indexSupervisors();
+      setSupervisors(response.data);
     };
     getHierarchy();
+    getSupervisors();
   }, []);
 
   return (
     <div className="container mx-auto py-10">
-      <DataTable columns={columns} data={index} />
+      <DataTable columns={getColumns(supervisors)} data={index} />
     </div>
   );
 };
