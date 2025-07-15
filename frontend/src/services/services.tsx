@@ -46,8 +46,7 @@ const signIn = async (data: object) => {
     const passData = await resData.json();
     return passData;
   } catch (err) {
-    // throw new ApiError(err);
-    console.log(err);
+    throw new Error(`Unable to log in: ${err}`);
   }
 };
 
