@@ -3,11 +3,10 @@ import { ChangeEvent } from "react";
 import { toast } from "sonner";
 
 export type Hierarchy = {
-  salespersonid: string;
-  firstname: string;
-  lastname: string;
-  email: string;
-  supervisorid: string;
+  salesPersonId: string;
+  salesPersonName: string;
+  supervisorId: string;
+  supervisorName: string;
 };
 
 // Sample list of supervisor IDs for the dropdown options
@@ -19,23 +18,22 @@ const supervisorOptions = [
 
 export const columns: ColumnDef<Hierarchy>[] = [
   {
-    accessorKey: "salespersonid",
+    accessorKey: "salesPersonId",
     header: "Employee ID",
   },
   {
-    header: "Name",
-    accessorFn: (row) => `${row.firstname} ${row.lastname}`,
-    id: "name",
+    accessorKey: "salesPersonName",
+    header: "Employee Name",
   },
   {
     accessorKey: "email",
     header: "Email",
   },
   {
-    accessorKey: "supervisorid",
+    accessorKey: "supervisorName",
     header: "Supervisor",
     cell: ({ row }) => {
-      const currentValue = row.original.supervisorid;
+      const currentValue = row.original.supervisorName;
 
       const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
         const newValue = e.target.value;
