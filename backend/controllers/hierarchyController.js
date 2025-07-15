@@ -37,4 +37,26 @@ const indexSupervisors = async (req, res) => {
   }
 };
 
-export { indexHierarchy, indexSupervisors };
+const indexEmployees = async (req, res) => {
+  try {
+    const user = req.user;
+    if (!user || !user._id) {
+      return res.status(401).json({ error: "Unauthorized: Unauthorized User" });
+    }
+    let data = await Hierarchy.find({ supervisorId: user._id }).populate(
+      "salesPersonId",
+      "firstName lastName"
+    );
+    data = data.map((item) => {
+      if (item.salesPersonId) {
+        item = item.toObject();
+        item.salesPersonId.name = `${item.salesPersonId.firstName} ${item.salesPersonId.lastName}`;
+      }
+      return item;
+    });
+    res.status(200).json({ data });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+export { indexHierarchy, indexSupervisors, indexEmployees };

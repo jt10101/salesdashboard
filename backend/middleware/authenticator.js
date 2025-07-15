@@ -3,26 +3,23 @@ const {
   decodeJWT,
   saveUserToRequest,
 } = require("../utils/tokenHandler");
-// const { ApiError } = require("../utils/errorHandler");
 
 const authenticateUser = async (req, res, next) => {
   try {
     const token = getTokenFromReq(req);
     if (!token) {
-      throw new ApiError({
-        status: 401,
-        source: { pointer: "Authorization Header" },
-        title: "Unauthorized",
-        detail: "Unable to get token from Authorization Header",
+      return res.status(401).json({
+        error: "Unauthorized",
+        message: "Unable to get token from Authorization Header",
       });
     }
+
     const decoded = await decodeJWT(token);
+
     if (!decoded.user) {
-      throw new ApiError({
-        status: 401,
-        source: { pointer: "Token that was provided" },
-        title: "Unauthorized",
-        detail: "Invalid token payload",
+      return res.status(401).json({
+        error: "Unauthorized",
+        message: "Invalid token payload",
       });
     }
 
@@ -30,7 +27,11 @@ const authenticateUser = async (req, res, next) => {
 
     next();
   } catch (err) {
-    next(err);
+    console.error(err);
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: err.message || "Something went wrong",
+    });
   }
 };
 
