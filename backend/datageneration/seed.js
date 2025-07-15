@@ -14,6 +14,14 @@ const generateUsers = async () => {
       lastName: "Tham",
       role: "Supervisor",
     },
+    {
+      username: "user2",
+      email: "user2@test.com",
+      password: bcryptPassword("12345678"),
+      firstName: "Elsa",
+      lastName: "Tham",
+      role: "IC",
+    },
     ...Array.from({ length: 5 }, () => ({
       username: faker.internet.username().toLowerCase().replaceAll(".", ""),
       email: faker.internet.email(),
