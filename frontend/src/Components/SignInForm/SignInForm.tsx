@@ -1,7 +1,7 @@
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useState } from "react";
-import { signIn } from "@/services/services";
+import { signIn } from "@/services/signInService";
 import { toast } from "sonner";
 import { useNavigate } from "react-router";
 

@@ -1,5 +1,6 @@
 // run this only in backend root folder
 const User = require("../models/User");
+const Hierarchy = require("../models/Hierarchy");
 const { faker } = require("@faker-js/faker");
 const { bcryptPassword } = require("../utils/bcrypt");
 
@@ -32,6 +33,22 @@ const generateUsers = async () => {
   }
 };
 
+const generateHierarchy = async (users) => {
+  const data = users.filter((a) => a.role === "IC");
+  const hierarchyData = data.map((user) => ({
+    salesPersonId: user._id,
+  }));
+
+  try {
+    await Hierarchy.deleteMany({});
+    const newHierarchy = await Hierarchy.create(hierarchyData);
+    console.log(newHierarchy);
+    return newHierarchy;
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 const generateTransactions = async () => {};
 
 // Run Queries
@@ -48,7 +65,8 @@ const connect = async () => {
 
   // Call the runQueries function, which will eventually hold functions to work
   // with data in our db.
-  await generateUsers();
+  const users = await generateUsers();
+  await generateHierarchy(users);
 
   // Disconnect our app from MongoDB after our queries run.
   await mongoose.disconnect();
