@@ -1,5 +1,7 @@
+import { DemoPage } from "@/components/table/page";
+
 const RoleAssignment = () => {
-  return <>Role Assignment</>;
+  return <DemoPage />;
 };
 
 export { RoleAssignment };
