@@ -2,7 +2,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { toast } from "sonner";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 
 import { useContext } from "react";
@@ -13,9 +13,16 @@ import { saveTokenToLocalStorage } from "@/utils/tokenHandler";
 const SignInForm = () => {
   const [inputUsername, setUsername] = useState("");
   const [inputPassword, setPassword] = useState("");
-  const { setUser } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate("/dashboard");
+      toast.success(`Welcome back ${user.username}`);
+    }
+  }, [user, navigate]);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
