@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { logout } from "@/utils/LogOut";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { UserContext } from "@/contexts/UserContext";
+import { indexEmployees } from "@/services/hierarchyServices";
 
 import { InputSalesSheet } from "../SalesInput/SalesInput";
 import { Link, useNavigate } from "react-router";
@@ -17,11 +18,29 @@ import {
 
 const NavBar = () => {
   const [showSheet, setShowSheet] = useState(false);
+  const [employees, setEmployees] = useState([]);
   const { user, setRole, setUser } = useContext(UserContext);
   const navigate = useNavigate();
   const handleLogout = () => {
     logout({ setUser, setRole, navigate });
   };
+
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      try {
+        const employees = await indexEmployees();
+        const namesArray = employees.data
+          .map((item) => item.salesPersonId?.name)
+          .filter((name) => !!name);
+        setEmployees(namesArray);
+        console.log(namesArray);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchEmployees();
+  }, []);
 
   return (
     <NavigationMenu>
@@ -35,12 +54,19 @@ const NavBar = () => {
                 <NavigationMenuLink asChild>
                   <Link to="/">Dashboard</Link>
                 </NavigationMenuLink>
-                <NavigationMenuLink asChild>
-                  <Link to="/">Sales Person 1</Link>
-                </NavigationMenuLink>
-                <NavigationMenuLink asChild>
-                  <Link to="/">Sales Person 2</Link>
-                </NavigationMenuLink>
+
+                {/* Dynamically render employee names here */}
+                {employees.map((name, index) => (
+                  <NavigationMenuLink key={index} asChild>
+                    <Link
+                      to={`/sales-person/${name
+                        .replace(/\s+/g, "-")
+                        .toLowerCase()}`}
+                    >
+                      {name}
+                    </Link>
+                  </NavigationMenuLink>
+                ))}
               </li>
             </ul>
           </NavigationMenuContent>

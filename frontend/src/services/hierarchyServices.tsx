@@ -32,4 +32,20 @@ const indexSupervisors = async () => {
   }
 };
 
-export { indexHierarchy, indexSupervisors };
+const indexEmployees = async () => {
+  const url_modifiers = "/hierarchy/index/employees"; // EDIT THIS PART
+  const url = Service_BASE_URL + url_modifiers;
+
+  try {
+    const resData = await fetch(url, {
+      method: "GET",
+      headers: Service_HEADER_isLoggedIn,
+    });
+    const passData = await resData.json();
+    return passData;
+  } catch (err) {
+    throw new Error(`Error: ${err}`);
+  }
+};
+
+export { indexHierarchy, indexSupervisors, indexEmployees };
