@@ -1,3 +1,10 @@
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter,
+} from "../ui/card";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { toast } from "sonner";
@@ -44,26 +51,41 @@ const SignInForm = () => {
       toast.error(err instanceof Error ? err.message : "Login failed");
     }
   };
+
   return (
-    <form onSubmit={handleSubmit}>
-      <Input
-        type="text"
-        name="username"
-        placeholder="Username"
-        value={inputUsername}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <Input
-        type="password"
-        name="password"
-        placeholder="Password"
-        value={inputPassword}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-      <Button type="submit" variant="secondary">
-        Sign In
-      </Button>
-    </form>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <Card className="w-full max-w-md p-4 shadow-xl">
+        <CardHeader className="flex flex-col items-center gap-2">
+          <img src="" alt="Logo" className="w-16 h-16 rounded-full" />
+          <CardTitle className="text-2xl text-center">Sign In</CardTitle>
+        </CardHeader>
+        <form onSubmit={handleSubmit}>
+          <CardContent className="space-y-4">
+            <Input
+              type="text"
+              name="username"
+              placeholder="Username"
+              value={inputUsername}
+              onChange={(e) => setUsername(e.target.value)}
+              required
+            />
+            <Input
+              type="password"
+              name="password"
+              placeholder="Password"
+              value={inputPassword}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </CardContent>
+          <CardFooter className="mt-4">
+            <Button className="w-full" type="submit" variant="secondary">
+              Sign In
+            </Button>
+          </CardFooter>
+        </form>
+      </Card>
+    </div>
   );
 };
 
