@@ -34,6 +34,17 @@ const InputSalesSheet = ({
   const [salesAmount, setSalesAmount] = useState("");
   const [salesCharge, setSalesCharge] = useState("");
 
+  const handleSubmit = async () => {
+    const data = {
+      transactionDate: date,
+      salesAmount: salesAmount,
+      salesCharge: salesCharge,
+    };
+
+    await addTransaction(data);
+    console.log(data);
+  };
+
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent>
@@ -95,7 +106,9 @@ const InputSalesSheet = ({
           </div>
         </div>
         <SheetFooter>
-          <Button type="submit">Input Sales Transaction</Button>
+          <Button type="submit" onClick={handleSubmit}>
+            Input Sales Transaction
+          </Button>
           <SheetClose asChild>
             <Button variant="outline">Close</Button>
           </SheetClose>

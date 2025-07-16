@@ -8,7 +8,7 @@ const addTransaction = async (data: object) => {
     const resData = await fetch(url, {
       method: "POST",
       headers: Service_HEADER_isLoggedIn,
-      body: data,
+      body: JSON.stringify(data),
     });
     const passData = await resData.json();
     return passData;

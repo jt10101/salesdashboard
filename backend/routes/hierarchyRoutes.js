@@ -9,7 +9,7 @@ const authenticateUser = require("../middleware/authenticator");
 
 //user routes
 router.get("/index", indexHierarchy);
-router.get("/index/supervisors", authenticateUser, indexSupervisors);
-router.get("/index/employees", authenticateUser, indexEmployees);
+router.get("/index/supervisors", indexSupervisors);
+router.get("/index/employees", indexEmployees);
 
 module.exports = router;

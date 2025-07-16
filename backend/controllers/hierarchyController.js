@@ -1,22 +1,32 @@
 const Hierarchy = require("../models/Hierarchy");
 const User = require("../models/User");
 
+const getFullName = (user) =>
+  `${user?.firstName ?? ""} ${user?.lastName ?? ""}`.trim();
+
+const formatHierarchyItem = (item) => ({
+  salesPersonId: item.salesPersonId?._id,
+  salesPersonName: getFullName(item.salesPersonId),
+  supervisorId: item.supervisorId?._id,
+  supervisorName: getFullName(item.supervisorId),
+});
+
+const formatEmployeeItem = (item) => {
+  const salesPerson = item.salesPersonId;
+  return {
+    ...item.toObject(),
+    salesPersonId: salesPerson?._id,
+    salesPersonName: getFullName(salesPerson),
+  };
+};
+
 const indexHierarchy = async (req, res) => {
   try {
     const data = await Hierarchy.find()
       .populate("salesPersonId", "firstName lastName")
       .populate("supervisorId", "firstName lastName");
 
-    const flattened = data.map((item) => ({
-      salesPersonId: item.salesPersonId?._id,
-      salesPersonName: `${item.salesPersonId?.firstName ?? ""} ${
-        item.salesPersonId?.lastName ?? ""
-      }`.trim(),
-      supervisorId: item.supervisorId?._id,
-      supervisorName: `${item.supervisorId?.firstName ?? ""} ${
-        item.supervisorId?.lastName ?? ""
-      }`.trim(),
-    }));
+    const flattened = data.map(formatHierarchyItem);
 
     res.status(200).json({ data: flattened });
   } catch (err) {
@@ -27,10 +37,7 @@ const indexHierarchy = async (req, res) => {
 const indexSupervisors = async (req, res) => {
   try {
     const data = await User.find({ role: "Supervisor" });
-    const names = data.map((item) =>
-      `${item.firstName ?? ""} ${item.lastName ?? ""}`.trim()
-    );
-
+    const names = data.map(getFullName);
     res.status(200).json({ data: names });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -47,16 +54,13 @@ const indexEmployees = async (req, res) => {
       "salesPersonId",
       "firstName lastName"
     );
-    data = data.map((item) => {
-      if (item.salesPersonId) {
-        item = item.toObject();
-        item.salesPersonId.name = `${item.salesPersonId.firstName} ${item.salesPersonId.lastName}`;
-      }
-      return item;
-    });
+
+    data = data.map(formatEmployeeItem);
+
     res.status(200).json({ data });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
-export { indexHierarchy, indexSupervisors, indexEmployees };
+
+module.exports = { indexHierarchy, indexSupervisors, indexEmployees };

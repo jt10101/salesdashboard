@@ -15,6 +15,7 @@ const mongoose = require("mongoose");
 const publicRouter = require("./routes/publicRoutes");
 const hierarchyRouter = require("./routes/hierarchyRoutes");
 const transactionRouter = require("./routes/transactionRoutes");
+const authenticator = require("./middleware/authenticator");
 
 // Connection to MongoDB
 mongoose.connect(process.env.MONGODB_URI);
@@ -30,6 +31,7 @@ app.use(logger("dev"));
 
 // Routes
 app.use("/api/public", publicRouter);
+app.use(authenticator);
 app.use("/api/hierarchy", hierarchyRouter);
 app.use("/api/transaction/", transactionRouter);
 

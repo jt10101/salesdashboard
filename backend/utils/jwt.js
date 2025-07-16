@@ -30,4 +30,4 @@ const decodeJWT = (token) => {
   return decoded;
 };
 
-module.export = { getTokenFromReq, createJWT, decodeJWT };
+module.exports = { getTokenFromReq, createJWT, decodeJWT };
