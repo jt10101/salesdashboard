@@ -18,6 +18,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useState } from "react";
+import { addTransaction } from "@/services/transactionServices";
 
 const InputSalesSheet = ({
   open,
@@ -27,7 +28,12 @@ const InputSalesSheet = ({
   onOpenChange: (open: boolean) => void;
 }) => {
   const [openCal, setOpenCal] = useState(false);
-  const [date, setDate] = useState<Date | undefined>(undefined);
+
+  // states to capture sheet inputs
+  const [date, setDate] = useState<Date | undefined>(new Date());
+  const [salesAmount, setSalesAmount] = useState("");
+  const [salesCharge, setSalesCharge] = useState("");
+
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent>
@@ -70,11 +76,22 @@ const InputSalesSheet = ({
 
           <div className="grid gap-3">
             <Label htmlFor="salesamount">Sales Amount</Label>
-            <Input id="salesamount" defaultValue="250000" />
+            <Input
+              id="salesamount"
+              placeholder="100000"
+              value={salesAmount}
+              onChange={(e) => setSalesAmount(e.target.value)}
+            />
           </div>
           <div className="grid gap-3">
             <Label htmlFor="salescharge">Sales Charge</Label>
-            <Input id="salescharge" defaultValue="2%" />
+            <Input
+              id="salescharge"
+              // defaultValue="2%"
+              placeholder="between 0 - 100 in %"
+              value={salesCharge}
+              onChange={(e) => setSalesCharge(e.target.value)}
+            />
           </div>
         </div>
         <SheetFooter>
