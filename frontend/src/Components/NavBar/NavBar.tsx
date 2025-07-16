@@ -19,7 +19,7 @@ import {
 const NavBar = () => {
   const [showSheet, setShowSheet] = useState(false);
   const [employees, setEmployees] = useState([]);
-  const [test, setTest] = useState([]);
+  // const [test, setTest] = useState([]);
 
   const { user, setRole, setUser } = useContext(UserContext);
   const navigate = useNavigate();
@@ -37,7 +37,7 @@ const NavBar = () => {
         // setEmployees(namesArray);
         // console.log(namesArray);
         console.log(employees);
-        setTest(employees.data);
+        setEmployees(employees.data);
       } catch (error) {
         console.error(error);
       }
@@ -50,38 +50,40 @@ const NavBar = () => {
     <NavigationMenu>
       <NavigationMenuList>
         {/* Break for each option */}
-        <NavigationMenuItem>
-          <NavigationMenuTrigger>Home</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid w-[200px] gap-4">
-              <li>
-                <NavigationMenuLink asChild>
-                  <Link to="/">Dashboard</Link>
-                </NavigationMenuLink>
-
-                {/* Dynamically render employee names here */}
-                {test.map((name, index) => (
-                  <NavigationMenuLink key={index} asChild>
-                    <Link to={name.salesPersonId._id}>
-                      {name.salesPersonId.name}
-                    </Link>
-                  </NavigationMenuLink>
-                ))}
-              </li>
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-
-        {/* Break for each option */}
         {user?.role === "Supervisor" && (
-          <NavigationMenuItem>
-            <NavigationMenuLink
-              asChild
-              className={navigationMenuTriggerStyle()}
-            >
-              <Link to="/role">Role Assignment</Link>
-            </NavigationMenuLink>
-          </NavigationMenuItem>
+          <>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Home</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <ul className="grid w-[200px] gap-4">
+                  <li>
+                    <NavigationMenuLink asChild>
+                      <Link to="/">Dashboard</Link>
+                    </NavigationMenuLink>
+
+                    {employees.map(
+                      (item, index) =>
+                        item?.salesPersonId && (
+                          <NavigationMenuLink key={index} asChild>
+                            <Link to={`/${item.salesPersonId}`}>
+                              {item.salesPersonName || "Unnamed"}
+                            </Link>
+                          </NavigationMenuLink>
+                        )
+                    )}
+                  </li>
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuLink
+                asChild
+                className={navigationMenuTriggerStyle()}
+              >
+                <Link to="/role">Role Assignment</Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+          </>
         )}
 
         {/* Break for each option */}
