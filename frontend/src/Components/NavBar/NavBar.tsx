@@ -61,16 +61,17 @@ const NavBar = () => {
                       <Link to="/">Dashboard</Link>
                     </NavigationMenuLink>
 
-                    {employees.map(
-                      (item, index) =>
-                        item?.salesPersonId && (
-                          <NavigationMenuLink key={index} asChild>
-                            <Link to={`/${item.salesPersonId}`}>
-                              {item.salesPersonName || "Unnamed"}
-                            </Link>
-                          </NavigationMenuLink>
-                        )
-                    )}
+                    {Array.isArray(employees) &&
+                      employees.map(
+                        (item, index) =>
+                          item?.salesPersonId && (
+                            <NavigationMenuLink key={index} asChild>
+                              <Link to={`/${item.salesPersonId}`}>
+                                {item.salesPersonName || "Unnamed"}
+                              </Link>
+                            </NavigationMenuLink>
+                          )
+                      )}
                   </li>
                 </ul>
               </NavigationMenuContent>
