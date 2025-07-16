@@ -88,19 +88,30 @@ const NavBar = () => {
 
         {/* Break for each option */}
         {user?.role === "IC" && (
-          <NavigationMenuItem>
-            <NavigationMenuLink
-              asChild
-              className={navigationMenuTriggerStyle()}
-            >
-              <button
-                onClick={() => setShowSheet(true)}
-                className="w-full text-left"
+          <>
+            <NavigationMenuItem>
+              <NavigationMenuLink
+                asChild
+                className={navigationMenuTriggerStyle()}
               >
-                Add Sales
-              </button>
-            </NavigationMenuLink>
-          </NavigationMenuItem>
+                <Link to={`/${user._id}`}>My Dashboard</Link>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+
+            <NavigationMenuItem>
+              <NavigationMenuLink
+                asChild
+                className={navigationMenuTriggerStyle()}
+              >
+                <button
+                  onClick={() => setShowSheet(true)}
+                  className="w-full text-left"
+                >
+                  Add Sales
+                </button>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+          </>
         )}
         {/* Break for each option */}
         <NavigationMenuItem>
