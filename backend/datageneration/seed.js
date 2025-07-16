@@ -1,6 +1,7 @@
 // run this only in backend root folder
 const User = require("../models/User");
 const Hierarchy = require("../models/Hierarchy");
+const Transaction = require("../models/Transactions");
 const { faker } = require("@faker-js/faker");
 const { bcryptPassword } = require("../utils/bcrypt");
 
@@ -72,8 +73,37 @@ const generateHierarchy = async (users) => {
   }
 };
 
-const generateTransactions = async () => {};
-
+const generateTransactions = async (users) => {
+  const user2 = users.find((u) => u.username === "user2");
+  const salesPersonIds = users.filter((u) => u.role === "IC").map((u) => u._id);
+  const transactionData = [
+    ...Array.from({ length: 10 }, () => ({
+      salesPersonId: user2._id,
+      transactionDate: faker.date
+        .between({ from: "2023-01-01", to: "2025-01-01" })
+        .toISOString()
+        .split("T")[0],
+      salesAmount: faker.number.int({ min: 100000, max: 500000 }),
+      salesCharge: faker.number.float(),
+    })),
+    ...Array.from({ length: 100 }, () => ({
+      salesPersonId: faker.helpers.arrayElement(salesPersonIds),
+      transactionDate: faker.date
+        .between({ from: "2023-01-01", to: "2025-01-01" })
+        .toISOString()
+        .split("T")[0],
+      salesAmount: faker.number.int({ min: 100000, max: 500000 }),
+      salesCharge: faker.number.float(),
+    })),
+  ];
+  try {
+    await Transaction.deleteMany({});
+    const newTransaction = await Transaction.create(transactionData);
+    console.log(newTransaction);
+  } catch (err) {
+    console.log(err);
+  }
+};
 // Run Queries
 const dotenv = require("dotenv");
 dotenv.config();
@@ -90,6 +120,7 @@ const connect = async () => {
   // with data in our db.
   const users = await generateUsers();
   await generateHierarchy(users);
+  await generateTransactions(users);
 
   // Disconnect our app from MongoDB after our queries run.
   await mongoose.disconnect();
