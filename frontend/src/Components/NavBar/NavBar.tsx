@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { logout } from "@/utils/LogOut";
+import { logout } from "@/utils/logOut";
 import { useContext, useEffect } from "react";
 import { UserContext } from "@/contexts/UserContext";
 import { indexEmployees } from "@/services/hierarchyServices";
@@ -19,6 +19,8 @@ import {
 const NavBar = () => {
   const [showSheet, setShowSheet] = useState(false);
   const [employees, setEmployees] = useState([]);
+  const [test, setTest] = useState([]);
+
   const { user, setRole, setUser } = useContext(UserContext);
   const navigate = useNavigate();
   const handleLogout = () => {
@@ -29,11 +31,13 @@ const NavBar = () => {
     const fetchEmployees = async () => {
       try {
         const employees = await indexEmployees();
-        const namesArray = employees.data
-          .map((item) => item.salesPersonId?.name)
-          .filter((name) => !!name);
-        setEmployees(namesArray);
-        console.log(namesArray);
+        // const namesArray = employees.data
+        //   .map((item) => item.salesPersonId?.name)
+        //   .filter((name) => !!name);
+        // setEmployees(namesArray);
+        // console.log(namesArray);
+        console.log(employees);
+        setTest(employees.data);
       } catch (error) {
         console.error(error);
       }
@@ -56,14 +60,10 @@ const NavBar = () => {
                 </NavigationMenuLink>
 
                 {/* Dynamically render employee names here */}
-                {employees.map((name, index) => (
+                {test.map((name, index) => (
                   <NavigationMenuLink key={index} asChild>
-                    <Link
-                      to={`/sales-person/${name
-                        .replace(/\s+/g, "-")
-                        .toLowerCase()}`}
-                    >
-                      {name}
+                    <Link to={name.salesPersonId._id}>
+                      {name.salesPersonId.name}
                     </Link>
                   </NavigationMenuLink>
                 ))}
