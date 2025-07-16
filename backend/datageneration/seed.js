@@ -89,7 +89,7 @@ const generateTransactions = async (users) => {
     ...Array.from({ length: 100 }, () => ({
       salesPersonId: faker.helpers.arrayElement(salesPersonIds),
       transactionDate: faker.date
-        .between({ from: "2023-01-01", to: "2025-01-01" })
+        .between({ from: "2025-01-01", to: "2025-06-30" }) // YYYY-MM-DD
         .toISOString()
         .split("T")[0],
       salesAmount: faker.number.int({ min: 100000, max: 500000 }),
