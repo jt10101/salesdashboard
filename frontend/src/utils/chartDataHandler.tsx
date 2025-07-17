@@ -39,7 +39,7 @@ const transactionDataHandler = (
     );
   }
   const currentYear = new Date().getFullYear();
-  const currentMonthIndex = new Date().getMonth(); // 0-based: Jan=0
+  const currentMonthIndex = new Date().getMonth();
 
   for (const { transactionDate, salesAmount, salesCharge } of transactions) {
     if (!transactionDate) continue;
@@ -62,13 +62,10 @@ const transactionDataHandler = (
 
   const grouped: YearlyGroupedData = {};
 
-  // Fill in missing months for each year from earliest to current year
   for (let year = earliestYear; year <= currentYear; year++) {
     grouped[year] = [];
 
-    // Loop through all months
     Object.entries(monthMap).forEach(([monthKey, monthName], index) => {
-      // Skip future months for current year
       if (year === currentYear && index > currentMonthIndex) return;
 
       if (!yearMonthMap[year]) {
