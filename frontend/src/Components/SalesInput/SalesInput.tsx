@@ -37,7 +37,6 @@ const InputSalesSheet = ({
 }) => {
   const [openCal, setOpenCal] = useState(false);
 
-  // states to capture sheet inputs
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [salesAmount, setSalesAmount] = useState("");
   const [salesCharge, setSalesCharge] = useState("");
@@ -82,7 +81,7 @@ const InputSalesSheet = ({
                 <Button
                   variant="outline"
                   id="date"
-                  className="w-full justify-between font-normal" // updated from w-48
+                  className="w-full justify-between font-normal"
                 >
                   {date ? date.toLocaleDateString() : "Select date"}
                   <ChevronDownIcon />

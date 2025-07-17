@@ -14,8 +14,12 @@ const addTransaction = async (data: object) => {
       throw new Error(passData?.error || "Failed to add transaction");
     }
     return passData;
-  } catch (err: any) {
-    throw new Error(err.message || "An unknown error occurred");
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      throw new Error(err.message);
+    } else {
+      throw new Error("An unknown error occurred");
+    }
   }
 };
 
@@ -31,8 +35,12 @@ const indexTransactions = async () => {
       throw new Error(passData?.error || "Failed to fetch transactions");
     }
     return passData;
-  } catch (err: any) {
-    throw new Error(err.message || "An unknown error occurred");
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      throw new Error(err.message);
+    } else {
+      throw new Error("An unknown error occurred");
+    }
   }
 };
 
