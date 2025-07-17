@@ -44,7 +44,7 @@ export function TargetChart() {
     const getTargets = async () => {
       try {
         setLoading(true);
-        const response = await indexTarget(targetMonth);
+        const response = await indexTarget();
         const rawData = response.data;
         // const formattedData = transactionDataHandler(rawData);
 
@@ -53,7 +53,6 @@ export function TargetChart() {
         // setChartData(formattedData[currentYearStr] || []);
         // console.log(formattedData);
         console.log(rawData);
-        console.log(lastDayOfMonthStr);
       } catch (error) {
         console.error("Error loading targets", error);
       } finally {
