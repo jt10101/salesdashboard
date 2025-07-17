@@ -121,6 +121,7 @@ const connect = async () => {
   const users = await generateUsers();
   await generateHierarchy(users);
   await generateTransactions(users);
+  // await Transaction.deleteMany({});
 
   // Disconnect our app from MongoDB after our queries run.
   await mongoose.disconnect();

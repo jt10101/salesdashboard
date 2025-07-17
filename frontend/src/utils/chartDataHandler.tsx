@@ -66,8 +66,13 @@ const transactionDataHandler = (
     const yearStr = year.toString();
     grouped[yearStr] = [];
 
-    Object.entries(monthMap).forEach(([monthKey, monthName], index) => {
-      if (year === currentYear && index > currentMonthIndex) return;
+    const orderedMonthEntries = Object.entries(monthMap).sort(
+      ([a], [b]) => Number(a) - Number(b)
+    );
+
+    orderedMonthEntries.forEach(([monthKey, monthName]) => {
+      const monthIndex = Number(monthKey) - 1;
+      if (year === currentYear && monthIndex > currentMonthIndex) return;
 
       if (!yearMonthMap[yearStr]) {
         yearMonthMap[yearStr] = {};
