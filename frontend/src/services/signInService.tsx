@@ -1,4 +1,4 @@
-import { Service_BASE_URL, Service_HEADER } from "./configServices";
+import { Service_BASE_URL, getAuthHeaders } from "./configServices";
 
 const signIn = async (data: object) => {
   const url_modifiers = "/public/sign-in"; // EDIT THIS PART
@@ -7,7 +7,7 @@ const signIn = async (data: object) => {
   try {
     const resData = await fetch(url, {
       method: "POST",
-      headers: Service_HEADER,
+      headers: getAuthHeaders(),
       body: JSON.stringify(data),
     });
     const passData = await resData.json();

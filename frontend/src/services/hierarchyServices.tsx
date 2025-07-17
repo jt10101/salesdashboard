@@ -1,4 +1,4 @@
-import { Service_BASE_URL, Service_HEADER_isLoggedIn } from "./configServices";
+import { Service_BASE_URL, getAuthHeaders } from "./configServices";
 
 const indexHierarchy = async () => {
   const url_modifiers = "/hierarchy/index"; // EDIT THIS PART
@@ -7,7 +7,7 @@ const indexHierarchy = async () => {
   try {
     const resData = await fetch(url, {
       method: "GET",
-      headers: Service_HEADER_isLoggedIn,
+      headers: getAuthHeaders(),
     });
     const passData = await resData.json();
     return passData;
@@ -23,7 +23,7 @@ const indexSupervisors = async () => {
   try {
     const resData = await fetch(url, {
       method: "GET",
-      headers: Service_HEADER_isLoggedIn,
+      headers: getAuthHeaders(),
     });
     const passData = await resData.json();
     return passData;
@@ -39,7 +39,7 @@ const indexEmployees = async () => {
   try {
     const resData = await fetch(url, {
       method: "GET",
-      headers: Service_HEADER_isLoggedIn,
+      headers: getAuthHeaders(),
     });
     const passData = await resData.json();
     return passData;

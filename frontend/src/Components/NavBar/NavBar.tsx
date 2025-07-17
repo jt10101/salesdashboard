@@ -31,12 +31,6 @@ const NavBar = () => {
     const fetchEmployees = async () => {
       try {
         const employees = await indexEmployees();
-        // const namesArray = employees.data
-        //   .map((item) => item.salesPersonId?.name)
-        //   .filter((name) => !!name);
-        // setEmployees(namesArray);
-        // console.log(namesArray);
-        // console.log(employees);
         setEmployees(employees.data);
       } catch (error) {
         console.error(error);

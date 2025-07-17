@@ -40,10 +40,8 @@ const SignInForm = () => {
 
     try {
       const { user, token } = await signIn(data);
-      if (!token || !user) {
-        throw new Error("Invalid credentials");
-      }
-      saveTokenToLocalStorage(token);
+      if (!token || !user) throw new Error("Invalid credentials");
+      await saveTokenToLocalStorage(token);
       setUser(user);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Login failed");

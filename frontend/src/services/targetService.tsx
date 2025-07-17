@@ -1,11 +1,11 @@
-import { Service_BASE_URL, Service_HEADER_isLoggedIn } from "./configServices";
+import { Service_BASE_URL, getAuthHeaders } from "./configServices";
 
 const indexTarget = async () => {
   const url_modifiers = "/target/index";
   const url = Service_BASE_URL + url_modifiers;
   try {
     const res = await fetch(url, {
-      headers: Service_HEADER_isLoggedIn,
+      headers: getAuthHeaders(),
     });
     const passData = await res.json();
     if (!res.ok) {

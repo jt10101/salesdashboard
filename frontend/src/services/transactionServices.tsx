@@ -1,4 +1,4 @@
-import { Service_BASE_URL, Service_HEADER_isLoggedIn } from "./configServices";
+import { Service_BASE_URL, getAuthHeaders } from "./configServices";
 
 const addTransaction = async (data: object) => {
   const url_modifiers = "/transaction/add";
@@ -6,7 +6,7 @@ const addTransaction = async (data: object) => {
   try {
     const res = await fetch(url, {
       method: "POST",
-      headers: Service_HEADER_isLoggedIn,
+      headers: getAuthHeaders(),
       body: JSON.stringify(data),
     });
     const passData = await res.json();
@@ -24,7 +24,7 @@ const indexTransactions = async () => {
   const url = Service_BASE_URL + url_modifiers;
   try {
     const res = await fetch(url, {
-      headers: Service_HEADER_isLoggedIn,
+      headers: getAuthHeaders(),
     });
     const passData = await res.json();
     if (!res.ok) {

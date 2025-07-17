@@ -3,10 +3,12 @@ const Service_HEADER = {
   "Content-Type": "application/json",
 };
 
-const token = localStorage.getItem("token");
-const Service_HEADER_isLoggedIn = {
-  "Content-Type": "application/json",
-  Authorization: `Bearer ${token}`,
+const getAuthHeaders = () => {
+  const token = localStorage.getItem("token");
+  return {
+    "Content-Type": "application/json",
+    Authorization: token ? `Bearer ${token}` : "",
+  };
 };
 
-export { Service_BASE_URL, Service_HEADER, Service_HEADER_isLoggedIn };
+export { Service_BASE_URL, Service_HEADER, getAuthHeaders };

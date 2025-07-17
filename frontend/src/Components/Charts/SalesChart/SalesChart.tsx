@@ -76,6 +76,8 @@ const SalesChart = () => {
     }
   }, [selectedYear, allFormattedData]);
 
+  const showLoader = loading || chartData.length === 0;
+
   return (
     <Card className="pt-0">
       <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
@@ -104,7 +106,7 @@ const SalesChart = () => {
         </Select>
       </CardHeader>
 
-      {loading ? (
+      {showLoader ? (
         <CardContent className="flex h-[250px] items-center justify-center">
           <Loader className="h-6 w-6 animate-spin text-primary" />
         </CardContent>
