@@ -18,6 +18,13 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { useState } from "react";
 import { addTransaction } from "@/services/transactionServices";
 
@@ -34,19 +41,25 @@ const InputSalesSheet = ({
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [salesAmount, setSalesAmount] = useState("");
   const [salesCharge, setSalesCharge] = useState("");
+  const [productType, setProductType] = useState("");
 
   const handleSubmit = async () => {
     const data = {
       transactionDate: date,
       salesAmount,
       salesCharge,
+      productType,
     };
 
     try {
       await addTransaction(data);
       toast.success("Sales Transaction successfully recorded");
-    } catch (error: any) {
-      toast.error(error?.message || "Failed to record transaction");
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error("Failed to record transaction");
+      }
     }
   };
 
@@ -57,7 +70,9 @@ const InputSalesSheet = ({
           <SheetTitle>Add Sales</SheetTitle>
           <SheetDescription>Made a sale? Add it here!</SheetDescription>
         </SheetHeader>
-        <div className="grid flex-1 auto-rows-min gap-6 px-4">
+        <div className="grid flex-1 auto-rows-min gap-6 px-4 max-w-sm">
+          {" "}
+          {/* added max-w-sm */}
           <div className="grid gap-3">
             <Label htmlFor="date" className="px-1">
               Transaction Date
@@ -67,7 +82,7 @@ const InputSalesSheet = ({
                 <Button
                   variant="outline"
                   id="date"
-                  className="w-48 justify-between font-normal"
+                  className="w-full justify-between font-normal" // updated from w-48
                 >
                   {date ? date.toLocaleDateString() : "Select date"}
                   <ChevronDownIcon />
@@ -89,12 +104,28 @@ const InputSalesSheet = ({
               </PopoverContent>
             </Popover>
           </div>
-
+          <div className="grid gap-3">
+            <Label htmlFor="producttype" className="px-1">
+              Product Type
+            </Label>
+            <Select value={productType} onValueChange={setProductType}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Stocks" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Stocks">Stocks</SelectItem>
+                <SelectItem value="Bonds">Bonds</SelectItem>
+                <SelectItem value="Notes">Notes</SelectItem>
+                <SelectItem value="Mutual Funds">Mutual Funds</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
           <div className="grid gap-3">
             <Label htmlFor="salesamount">Sales Amount</Label>
             <Input
               id="salesamount"
               placeholder="100000"
+              className="w-full"
               value={salesAmount}
               onChange={(e) => setSalesAmount(e.target.value)}
             />
@@ -103,8 +134,8 @@ const InputSalesSheet = ({
             <Label htmlFor="salescharge">Sales Charge</Label>
             <Input
               id="salescharge"
-              // defaultValue="2%"
               placeholder="between 0 - 100 in %"
+              className="w-full"
               value={salesCharge}
               onChange={(e) => setSalesCharge(e.target.value)}
             />

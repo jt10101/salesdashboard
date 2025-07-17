@@ -7,9 +7,9 @@ const addTransaction = async (req, res) => {
       return res.status(401).json({ error: "Unauthorized: User not found" });
     }
 
-    const { transactionDate, salesAmount, salesCharge } = req.body;
+    const { transactionDate, salesAmount, salesCharge, productType } = req.body;
 
-    if (!transactionDate || !salesAmount || !salesCharge) {
+    if (!transactionDate || !salesAmount || !salesCharge || !productType) {
       return res.status(400).json({ error: "Missing input field" });
     }
     if (salesAmount <= 0 || salesCharge <= 0) {
@@ -30,6 +30,7 @@ const addTransaction = async (req, res) => {
       salesAmount,
       salesCharge: salesChargeModified,
       salesPersonId: userId,
+      productType,
     };
     const data = await Transaction.create(transactionData);
 

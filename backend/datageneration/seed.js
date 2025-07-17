@@ -87,6 +87,12 @@ const generateTransactions = async (users) => {
         .split("T")[0],
       salesAmount: faker.number.int({ min: 100000, max: 500000 }),
       salesCharge: faker.number.float(),
+      productType: faker.helpers.arrayElement([
+        "Stocks",
+        "Bonds",
+        "Notes",
+        "Mutual Funds",
+      ]),
     })),
     ...Array.from({ length: 100 }, () => ({
       salesPersonId: faker.helpers.arrayElement(salesPersonIds),
@@ -96,6 +102,12 @@ const generateTransactions = async (users) => {
         .split("T")[0],
       salesAmount: faker.number.int({ min: 100000, max: 500000 }),
       salesCharge: faker.number.float(),
+      productType: faker.helpers.arrayElement([
+        "Stocks",
+        "Bonds",
+        "Notes",
+        "Mutual Funds",
+      ]),
     })),
   ];
   try {

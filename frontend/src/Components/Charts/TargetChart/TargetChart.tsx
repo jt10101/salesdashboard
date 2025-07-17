@@ -16,7 +16,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ChartConfig, ChartContainer } from "@/components/ui/chart";
-import { Loader } from "@/utils/loader";
+// import { Loader } from "@/utils/loader";
 
 import { useEffect, useState } from "react";
 import { indexTarget } from "@/services/targetService";
@@ -38,7 +38,7 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export function TargetChart() {
-  const [loading, setLoading] = useState(true);
+  const [, setLoading] = useState(true);
 
   useEffect(() => {
     const getTargets = async () => {
