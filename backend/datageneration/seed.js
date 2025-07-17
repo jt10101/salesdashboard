@@ -114,7 +114,7 @@ const generateTargets = async (users) => {
   const targetData = [];
 
   for (let user of data) {
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 32; i++) {
       const monthDate = addMonths(startDate, i);
       const targetMonth = lastDayOfMonth(monthDate);
 
