@@ -24,6 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Loader } from "@/utils/loader";
 
 export const description = "A multiple line chart";
 
@@ -35,6 +36,7 @@ const SalesChart = () => {
   const [allFormattedData, setAllFormattedData] = useState<
     Record<string, any[]>
   >({});
+  const [loading, setLoading] = useState(true);
 
   const chartConfig = {
     salesAmount: {
@@ -50,6 +52,7 @@ const SalesChart = () => {
   useEffect(() => {
     const getTransactions = async () => {
       try {
+        setLoading(true);
         const response = await indexTransactions();
         const rawData = response.data;
         const formattedData = transactionDataHandler(rawData);
@@ -60,6 +63,8 @@ const SalesChart = () => {
         console.log(formattedData);
       } catch (error) {
         console.error("Error loading transactions", error);
+      } finally {
+        setLoading(false);
       }
     };
     getTransactions();
@@ -79,7 +84,6 @@ const SalesChart = () => {
           <CardDescription>Showing sales and revenue by month</CardDescription>
         </div>
 
-        {/* Year selector */}
         <Select
           value={selectedYear}
           onValueChange={(value) => setSelectedYear(value)}
@@ -100,58 +104,67 @@ const SalesChart = () => {
         </Select>
       </CardHeader>
 
-      <CardContent>
-        <ChartContainer
-          config={chartConfig}
-          className="aspect-auto h-[250px] w-full"
-        >
-          <LineChart
-            accessibilityLayer
-            data={chartData}
-            margin={{
-              left: 12,
-              right: 12,
-            }}
-          >
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="month"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 3)}
-            />
-            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
-            <Line
-              dataKey="salesAmount"
-              type="monotone"
-              stroke="var(--color-salesAmount)"
-              strokeWidth={2}
-              dot={false}
-            />
-            <Line
-              dataKey="revenue"
-              type="monotone"
-              stroke="var(--color-revenue)"
-              strokeWidth={2}
-              dot={false}
-            />
-          </LineChart>
-        </ChartContainer>
-      </CardContent>
+      {loading ? (
+        <CardContent className="flex h-[250px] items-center justify-center">
+          <Loader className="h-6 w-6 animate-spin text-primary" />
+        </CardContent>
+      ) : (
+        <>
+          <CardContent>
+            <ChartContainer
+              config={chartConfig}
+              className="aspect-auto h-[250px] w-full"
+            >
+              <LineChart
+                accessibilityLayer
+                data={chartData}
+                margin={{ left: 12, right: 12 }}
+              >
+                <CartesianGrid vertical={false} />
+                <XAxis
+                  dataKey="month"
+                  tickLine={false}
+                  axisLine={false}
+                  tickMargin={8}
+                  tickFormatter={(value) => value.slice(0, 3)}
+                />
+                <ChartTooltip
+                  cursor={false}
+                  content={<ChartTooltipContent />}
+                />
+                <Line
+                  dataKey="salesAmount"
+                  type="monotone"
+                  stroke="var(--color-salesAmount)"
+                  strokeWidth={2}
+                  dot={false}
+                />
+                <Line
+                  dataKey="revenue"
+                  type="monotone"
+                  stroke="var(--color-revenue)"
+                  strokeWidth={2}
+                  dot={false}
+                />
+              </LineChart>
+            </ChartContainer>
+          </CardContent>
 
-      <CardFooter>
-        <div className="flex w-full items-start gap-2 text-sm">
-          <div className="grid gap-2">
-            <div className="flex items-center gap-2 leading-none font-medium">
-              Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+          <CardFooter>
+            <div className="flex w-full items-start gap-2 text-sm">
+              <div className="grid gap-2">
+                <div className="flex items-center gap-2 leading-none font-medium">
+                  Trending up by 5.2% this month{" "}
+                  <TrendingUp className="h-4 w-4" />
+                </div>
+                <div className="text-muted-foreground flex items-center gap-2 leading-none">
+                  Showing sales and revenue for {selectedYear}
+                </div>
+              </div>
             </div>
-            <div className="text-muted-foreground flex items-center gap-2 leading-none">
-              Showing sales and revenue for {selectedYear}
-            </div>
-          </div>
-        </div>
-      </CardFooter>
+          </CardFooter>
+        </>
+      )}
     </Card>
   );
 };
