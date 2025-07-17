@@ -1,165 +1,91 @@
-const data = [
-  {
-    _id: "687778de894ebae5d4ecdbb2",
-    salesPersonId: "687778de894ebae5d4ecdb4a",
-    transactionDate: "2023-03-24T00:00:00.000Z",
-    salesAmount: 140135,
-    salesCharge: 0.14982379892608155,
-    createdAt: "2025-07-16T10:03:10.810Z",
-    updatedAt: "2025-07-16T10:03:10.810Z",
-    __v: 0,
-  },
-  {
-    _id: "687778de894ebae5d4ecdbae",
-    salesPersonId: "687778de894ebae5d4ecdb4a",
-    transactionDate: "2023-10-19T00:00:00.000Z",
-    salesAmount: 319807,
-    salesCharge: 0.6862127746556,
-    createdAt: "2025-07-16T10:03:10.810Z",
-    updatedAt: "2025-07-16T10:03:10.810Z",
-    __v: 0,
-  },
-  {
-    _id: "687778de894ebae5d4ecdbac",
-    salesPersonId: "687778de894ebae5d4ecdb4a",
-    transactionDate: "2023-04-04T00:00:00.000Z",
-    salesAmount: 443853,
-    salesCharge: 0.7241374882966555,
-    createdAt: "2025-07-16T10:03:10.810Z",
-    updatedAt: "2025-07-16T10:03:10.810Z",
-    __v: 0,
-  },
-  {
-    _id: "687778de894ebae5d4ecdbaf",
-    salesPersonId: "687778de894ebae5d4ecdb4a",
-    transactionDate: "2024-04-22T00:00:00.000Z",
-    salesAmount: 366310,
-    salesCharge: 0.9837282888304241,
-    createdAt: "2025-07-16T10:03:10.810Z",
-    updatedAt: "2025-07-16T10:03:10.810Z",
-    __v: 0,
-  },
-  {
-    _id: "687778de894ebae5d4ecdbb1",
-    salesPersonId: "687778de894ebae5d4ecdb4a",
-    transactionDate: "2024-04-14T00:00:00.000Z",
-    salesAmount: 496260,
-    salesCharge: 0.4569168592850221,
-    createdAt: "2025-07-16T10:03:10.810Z",
-    updatedAt: "2025-07-16T10:03:10.810Z",
-    __v: 0,
-  },
-  {
-    _id: "687778de894ebae5d4ecdbb0",
-    salesPersonId: "687778de894ebae5d4ecdb4a",
-    transactionDate: "2023-12-12T00:00:00.000Z",
-    salesAmount: 177053,
-    salesCharge: 0.5273097066417102,
-    createdAt: "2025-07-16T10:03:10.810Z",
-    updatedAt: "2025-07-16T10:03:10.810Z",
-    __v: 0,
-  },
-  {
-    _id: "687778de894ebae5d4ecdbad",
-    salesPersonId: "687778de894ebae5d4ecdb4a",
-    transactionDate: "2024-07-29T00:00:00.000Z",
-    salesAmount: 386337,
-    salesCharge: 0.27425720810030185,
-    createdAt: "2025-07-16T10:03:10.810Z",
-    updatedAt: "2025-07-16T10:03:10.810Z",
-    __v: 0,
-  },
-  {
-    _id: "687778de894ebae5d4ecdbb4",
-    salesPersonId: "687778de894ebae5d4ecdb4a",
-    transactionDate: "2023-05-24T00:00:00.000Z",
-    salesAmount: 268390,
-    salesCharge: 0.08555786355743444,
-    createdAt: "2025-07-16T10:03:10.810Z",
-    updatedAt: "2025-07-16T10:03:10.810Z",
-    __v: 0,
-  },
-  {
-    _id: "687778de894ebae5d4ecdbb3",
-    salesPersonId: "687778de894ebae5d4ecdb4a",
-    transactionDate: "2024-10-04T00:00:00.000Z",
-    salesAmount: 490906,
-    salesCharge: 0.7156279595102731,
-    createdAt: "2025-07-16T10:03:10.810Z",
-    updatedAt: "2025-07-16T10:03:10.810Z",
-    __v: 0,
-  },
-  {
-    _id: "687778de894ebae5d4ecdbb5",
-    salesPersonId: "687778de894ebae5d4ecdb4a",
-    transactionDate: "2023-05-20T00:00:00.000Z",
-    salesAmount: 285481,
-    salesCharge: 0.49316616977637995,
-    createdAt: "2025-07-16T10:03:10.810Z",
-    updatedAt: "2025-07-16T10:03:10.810Z",
-    __v: 0,
-  },
-  {
-    _id: "687778de894ebae5d4ecdbff",
-    salesPersonId: "687778de894ebae5d4ecdb4a",
-    transactionDate: "2025-06-05T00:00:00.000Z",
-    salesAmount: 448080,
-    salesCharge: 0.34418439815690893,
-    createdAt: "2025-07-16T10:03:10.811Z",
-    updatedAt: "2025-07-16T10:03:10.811Z",
-    __v: 0,
-  },
-  {
-    _id: "687778de894ebae5d4ecdc16",
-    salesPersonId: "687778de894ebae5d4ecdb4a",
-    transactionDate: "2025-03-31T00:00:00.000Z",
-    salesAmount: 100574,
-    salesCharge: 0.05256333742573016,
-    createdAt: "2025-07-16T10:03:10.811Z",
-    updatedAt: "2025-07-16T10:03:10.811Z",
-    __v: 0,
-  },
-  {
-    _id: "687778de894ebae5d4ecdc13",
-    salesPersonId: "687778de894ebae5d4ecdb4a",
-    transactionDate: "2025-05-19T00:00:00.000Z",
-    salesAmount: 442407,
-    salesCharge: 0.8268464155166361,
-    createdAt: "2025-07-16T10:03:10.811Z",
-    updatedAt: "2025-07-16T10:03:10.811Z",
-    __v: 0,
-  },
-  {
-    _id: "68777ef060c267aa315c4e41",
-    salesPersonId: "687778de894ebae5d4ecdb4a",
-    transactionDate: "2025-01-07T00:00:00.000Z",
-    salesAmount: 400000,
-    salesCharge: 0.5,
-    createdAt: "2025-07-16T10:29:04.192Z",
-    updatedAt: "2025-07-16T10:29:04.192Z",
-    __v: 0,
-  },
-  {
-    _id: "687780ecc428ba6284964297",
-    salesPersonId: "687778de894ebae5d4ecdb4a",
-    transactionDate: "2025-01-07T00:00:00.000Z",
-    salesAmount: 400000,
-    salesCharge: 0.5,
-    createdAt: "2025-07-16T10:37:32.442Z",
-    updatedAt: "2025-07-16T10:37:32.442Z",
-    __v: 0,
-  },
-];
-
-const transactionDataHandler = (data) => {
-  const result = data.map((tx) => ({
-    ...tx,
-    transactionMonth: tx.transactionDate.slice(5, 7),
-    transactionYear: tx.transactionDate.slice(0, 4),
-    transactionRevenue: tx.salesAmount * tx.salesCharge,
-  }));
-
-  console.log(result);
+const monthMap: Record<string, string> = {
+  "01": "January",
+  "02": "February",
+  "03": "March",
+  "04": "April",
+  "05": "May",
+  "06": "June",
+  "07": "July",
+  "08": "August",
+  "09": "September",
+  "10": "October",
+  "11": "November",
+  "12": "December",
 };
 
-transactionDataHandler(data);
+type Transaction = {
+  transactionDate: string;
+  salesAmount: number;
+  salesCharge: number;
+};
+
+type MonthlyData = {
+  month: string;
+  salesAmount: number;
+  revenue: number;
+};
+
+type YearlyGroupedData = Record<string, MonthlyData[]>;
+
+const transactionDataHandler = (
+  transactions: Transaction[]
+): YearlyGroupedData => {
+  const yearMonthMap: Record<string, Record<string, MonthlyData>> = {};
+
+  let earliestYear = new Date().getFullYear();
+  if (transactions.length > 0) {
+    earliestYear = Math.min(
+      ...transactions.map((tx) => Number(tx.transactionDate.slice(0, 4)))
+    );
+  }
+  const currentYear = new Date().getFullYear();
+  const currentMonthIndex = new Date().getMonth(); // 0-based: Jan=0
+
+  for (const { transactionDate, salesAmount, salesCharge } of transactions) {
+    if (!transactionDate) continue;
+
+    const year = transactionDate.slice(0, 4);
+    const monthKey = transactionDate.slice(5, 7);
+    const month = monthMap[monthKey];
+    if (!month) continue;
+
+    if (!yearMonthMap[year]) {
+      yearMonthMap[year] = {};
+    }
+    if (!yearMonthMap[year][month]) {
+      yearMonthMap[year][month] = { month, salesAmount: 0, revenue: 0 };
+    }
+
+    yearMonthMap[year][month].salesAmount += salesAmount;
+    yearMonthMap[year][month].revenue += salesAmount * salesCharge;
+  }
+
+  const grouped: YearlyGroupedData = {};
+
+  // Fill in missing months for each year from earliest to current year
+  for (let year = earliestYear; year <= currentYear; year++) {
+    grouped[year] = [];
+
+    // Loop through all months
+    Object.entries(monthMap).forEach(([monthKey, monthName], index) => {
+      // Skip future months for current year
+      if (year === currentYear && index > currentMonthIndex) return;
+
+      if (!yearMonthMap[year]) {
+        yearMonthMap[year] = {};
+      }
+
+      const monthData = yearMonthMap[year][monthName] ?? {
+        month: monthName,
+        salesAmount: 0,
+        revenue: 0,
+      };
+
+      grouped[year].push(monthData);
+    });
+  }
+
+  return grouped;
+};
+
+export { transactionDataHandler };
