@@ -1,3 +1,4 @@
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -37,12 +38,16 @@ const InputSalesSheet = ({
   const handleSubmit = async () => {
     const data = {
       transactionDate: date,
-      salesAmount: salesAmount,
-      salesCharge: salesCharge,
+      salesAmount,
+      salesCharge,
     };
 
-    await addTransaction(data);
-    console.log(data);
+    try {
+      await addTransaction(data);
+      toast.success("Sales Transaction successfully recorded");
+    } catch (error: any) {
+      toast.error(error?.message || "Failed to record transaction");
+    }
   };
 
   return (

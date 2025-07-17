@@ -47,7 +47,7 @@ const NavBar = () => {
   }, []);
 
   return (
-    <NavigationMenu>
+    <NavigationMenu className="mt-4 ml-4 mr-4">
       <NavigationMenuList>
         {/* Break for each option */}
         {user?.role === "Supervisor" && (

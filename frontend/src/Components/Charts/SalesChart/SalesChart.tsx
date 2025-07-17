@@ -1,10 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { indexTransactions } from "@/services/transactionServices";
 import { transactionDataHandler } from "@/utils/chartDataHandler";
-
 import { TrendingUp } from "lucide-react";
 import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
-
 import {
   Card,
   CardContent,
@@ -30,15 +28,21 @@ import {
 export const description = "A multiple line chart";
 
 const SalesChart = () => {
-  //   const [chartData, setChartData] = useState([]);
+  const currentYearStr = new Date().getFullYear().toString();
+  const [availableYears, setAvailableYears] = useState<string[]>([]);
+  const [selectedYear, setSelectedYear] = useState<string>(currentYearStr);
+  const [chartData, setChartData] = useState([]);
+  const [allFormattedData, setAllFormattedData] = useState<
+    Record<string, any[]>
+  >({});
 
   const chartConfig = {
-    desktop: {
-      label: "Desktop",
+    salesAmount: {
+      label: "Sales Amount",
       color: "var(--chart-1)",
     },
-    mobile: {
-      label: "Mobile",
+    revenue: {
+      label: "Revenue",
       color: "var(--chart-2)",
     },
   } satisfies ChartConfig;
@@ -49,53 +53,53 @@ const SalesChart = () => {
         const response = await indexTransactions();
         const rawData = response.data;
         const formattedData = transactionDataHandler(rawData);
+
+        setAllFormattedData(formattedData);
+        setAvailableYears(Object.keys(formattedData).sort().reverse());
+        setChartData(formattedData[currentYearStr] || []);
         console.log(formattedData);
       } catch (error) {
         console.error("Error loading transactions", error);
       }
     };
-    const data = getTransactions();
-    // setChartData(data);
+    getTransactions();
   }, []);
 
-  const chartData = [
-    { month: "January", desktop: 186, mobile: 80 },
-    { month: "February", desktop: 305, mobile: 200 },
-    { month: "March", desktop: 237, mobile: 120 },
-    { month: "April", desktop: 73, mobile: 190 },
-    { month: "May", desktop: 209, mobile: 130 },
-    { month: "June", desktop: 214, mobile: 140 },
-  ];
+  useEffect(() => {
+    if (allFormattedData[selectedYear]) {
+      setChartData(allFormattedData[selectedYear]);
+    }
+  }, [selectedYear, allFormattedData]);
 
   return (
     <Card className="pt-0">
       <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
         <div className="grid flex-1 gap-1">
-          <CardTitle>Area Chart - Interactive</CardTitle>
-          <CardDescription>
-            Showing total visitors for the last 3 months
-          </CardDescription>
+          <CardTitle>Sales Overview</CardTitle>
+          <CardDescription>Showing sales and revenue by month</CardDescription>
         </div>
-        <Select>
+
+        {/* Year selector */}
+        <Select
+          value={selectedYear}
+          onValueChange={(value) => setSelectedYear(value)}
+        >
           <SelectTrigger
             className="hidden w-[160px] rounded-lg sm:ml-auto sm:flex"
-            aria-label="Select a value"
+            aria-label="Select year"
           >
-            <SelectValue placeholder="Last 3 months" />
+            <SelectValue placeholder="Select year" />
           </SelectTrigger>
           <SelectContent className="rounded-xl">
-            <SelectItem value="90d" className="rounded-lg">
-              Last 3 months
-            </SelectItem>
-            <SelectItem value="30d" className="rounded-lg">
-              Last 30 days
-            </SelectItem>
-            <SelectItem value="7d" className="rounded-lg">
-              Last 7 days
-            </SelectItem>
+            {availableYears.map((year) => (
+              <SelectItem key={year} value={year} className="rounded-lg">
+                {year}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </CardHeader>
+
       <CardContent>
         <ChartContainer
           config={chartConfig}
@@ -119,22 +123,23 @@ const SalesChart = () => {
             />
             <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
             <Line
-              dataKey="desktop"
+              dataKey="salesAmount"
               type="monotone"
-              stroke="var(--color-desktop)"
+              stroke="var(--color-salesAmount)"
               strokeWidth={2}
               dot={false}
             />
             <Line
-              dataKey="mobile"
+              dataKey="revenue"
               type="monotone"
-              stroke="var(--color-mobile)"
+              stroke="var(--color-revenue)"
               strokeWidth={2}
               dot={false}
             />
           </LineChart>
         </ChartContainer>
       </CardContent>
+
       <CardFooter>
         <div className="flex w-full items-start gap-2 text-sm">
           <div className="grid gap-2">
@@ -142,7 +147,7 @@ const SalesChart = () => {
               Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
             </div>
             <div className="text-muted-foreground flex items-center gap-2 leading-none">
-              Showing total visitors for the last 6 months
+              Showing sales and revenue for {selectedYear}
             </div>
           </div>
         </div>

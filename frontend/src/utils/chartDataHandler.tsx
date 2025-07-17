@@ -63,22 +63,38 @@ const transactionDataHandler = (
   const grouped: YearlyGroupedData = {};
 
   for (let year = earliestYear; year <= currentYear; year++) {
-    grouped[year] = [];
+    const yearStr = year.toString();
+    grouped[yearStr] = [];
 
     Object.entries(monthMap).forEach(([monthKey, monthName], index) => {
       if (year === currentYear && index > currentMonthIndex) return;
 
-      if (!yearMonthMap[year]) {
-        yearMonthMap[year] = {};
+      if (!yearMonthMap[yearStr]) {
+        yearMonthMap[yearStr] = {};
       }
 
-      const monthData = yearMonthMap[year][monthName] ?? {
+      const monthData = yearMonthMap[yearStr][monthName] ?? {
         month: monthName,
         salesAmount: 0,
         revenue: 0,
       };
 
-      grouped[year].push(monthData);
+      grouped[yearStr].push(monthData);
+    });
+  }
+
+  // Reverse map from month name to month number for sorting
+  const monthNameToKey = Object.entries(monthMap).reduce((acc, [key, name]) => {
+    acc[name] = key;
+    return acc;
+  }, {} as Record<string, string>);
+
+  // Sort each year's monthly data by month number
+  for (const year in grouped) {
+    grouped[year].sort((a, b) => {
+      const monthA = monthNameToKey[a.month] ?? "00";
+      const monthB = monthNameToKey[b.month] ?? "00";
+      return Number(monthA) - Number(monthB);
     });
   }
 
