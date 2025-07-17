@@ -19,11 +19,18 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export const description = "A multiple line chart";
 
 const SalesChart = () => {
-  const [chartData, setChartData] = useState([]);
+  //   const [chartData, setChartData] = useState([]);
 
   const chartConfig = {
     desktop: {
@@ -48,26 +55,52 @@ const SalesChart = () => {
       }
     };
     const data = getTransactions();
-    setChartData(data);
+    // setChartData(data);
   }, []);
 
-  //   const chartData = [
-  //     { month: "January", desktop: 186, mobile: 80 },
-  //     { month: "February", desktop: 305, mobile: 200 },
-  //     { month: "March", desktop: 237, mobile: 120 },
-  //     { month: "April", desktop: 73, mobile: 190 },
-  //     { month: "May", desktop: 209, mobile: 130 },
-  //     { month: "June", desktop: 214, mobile: 140 },
-  //   ];
+  const chartData = [
+    { month: "January", desktop: 186, mobile: 80 },
+    { month: "February", desktop: 305, mobile: 200 },
+    { month: "March", desktop: 237, mobile: 120 },
+    { month: "April", desktop: 73, mobile: 190 },
+    { month: "May", desktop: 209, mobile: 130 },
+    { month: "June", desktop: 214, mobile: 140 },
+  ];
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Line Chart - Multiple</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+    <Card className="pt-0">
+      <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
+        <div className="grid flex-1 gap-1">
+          <CardTitle>Area Chart - Interactive</CardTitle>
+          <CardDescription>
+            Showing total visitors for the last 3 months
+          </CardDescription>
+        </div>
+        <Select>
+          <SelectTrigger
+            className="hidden w-[160px] rounded-lg sm:ml-auto sm:flex"
+            aria-label="Select a value"
+          >
+            <SelectValue placeholder="Last 3 months" />
+          </SelectTrigger>
+          <SelectContent className="rounded-xl">
+            <SelectItem value="90d" className="rounded-lg">
+              Last 3 months
+            </SelectItem>
+            <SelectItem value="30d" className="rounded-lg">
+              Last 30 days
+            </SelectItem>
+            <SelectItem value="7d" className="rounded-lg">
+              Last 7 days
+            </SelectItem>
+          </SelectContent>
+        </Select>
       </CardHeader>
       <CardContent>
-        <ChartContainer config={chartConfig}>
+        <ChartContainer
+          config={chartConfig}
+          className="aspect-auto h-[250px] w-full"
+        >
           <LineChart
             accessibilityLayer
             data={chartData}
