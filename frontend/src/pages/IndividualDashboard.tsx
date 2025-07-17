@@ -1,14 +1,11 @@
 import { SalesChart } from "@/components/Charts/SalesChart/SalesChart";
-// import { ChartLineInteractive } from "@/components/Charts/SalesChart/SalesChart2";
-// import { ChartAreaInteractive } from "@/components/Charts/SalesChart/SalesChart3";
-import { ChartArea } from "lucide-react";
+import { ChartRadialText } from "@/components/Charts/TargetChart/TargetChart";
 
 const IndividualDashboard = () => {
   return (
     <div className="p-6 sm:p-8 md:p-10 lg:p-12">
-      {/* <ChartLineInteractive /> */}
-      {/* <ChartAreaInteractive /> */}
       <SalesChart />
+      <ChartRadialText />
     </div>
   );
 };
