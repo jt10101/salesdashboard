@@ -1,3 +1,6 @@
+import { useEffect } from "react";
+import { indexTransactions } from "@/services/transactionServices";
+
 import { TrendingUp } from "lucide-react";
 import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
 
@@ -39,6 +42,14 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 const IndividualDashboard = () => {
+  useEffect(() => {
+    const getTransactions = async () => {
+      const transactionData = await indexTransactions();
+      console.log(transactionData);
+    };
+    getTransactions();
+  }, []);
+
   return (
     <Card>
       <CardHeader>

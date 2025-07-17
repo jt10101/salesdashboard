@@ -36,7 +36,7 @@ const NavBar = () => {
         //   .filter((name) => !!name);
         // setEmployees(namesArray);
         // console.log(namesArray);
-        console.log(employees);
+        // console.log(employees);
         setEmployees(employees.data);
       } catch (error) {
         console.error(error);

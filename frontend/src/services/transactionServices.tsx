@@ -17,4 +17,19 @@ const addTransaction = async (data: object) => {
   }
 };
 
-export { addTransaction };
+const indexTransactions = async () => {
+  const url_modifiers = "/transaction/index"; // EDIT THIS PART
+  const url = Service_BASE_URL + url_modifiers;
+
+  try {
+    const resData = await fetch(url, {
+      headers: Service_HEADER_isLoggedIn,
+    });
+    const passData = await resData.json();
+    return passData;
+  } catch (err) {
+    throw new Error(`Error: ${err}`);
+  }
+};
+
+export { addTransaction, indexTransactions };
