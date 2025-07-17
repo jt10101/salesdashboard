@@ -1,3 +1,6 @@
+import { useAtom } from "jotai";
+import { refreshTriggerAtom } from "@/contexts/refreshAtom";
+
 import { useEffect, useState } from "react";
 import { indexTransactions } from "@/services/transactionServices";
 import { transactionDataHandler } from "@/utils/chartDataHandler";
@@ -29,6 +32,7 @@ import { Loader } from "@/utils/loader";
 export const description = "A multiple line chart";
 
 const SalesChart = () => {
+  const [refreshTrigger] = useAtom(refreshTriggerAtom);
   const currentYearStr = new Date().getFullYear().toString();
   const [availableYears, setAvailableYears] = useState<string[]>([]);
   const [selectedYear, setSelectedYear] = useState<string>(currentYearStr);
@@ -68,7 +72,7 @@ const SalesChart = () => {
       }
     };
     getTransactions();
-  }, []);
+  }, [refreshTrigger]);
 
   useEffect(() => {
     if (allFormattedData[selectedYear]) {

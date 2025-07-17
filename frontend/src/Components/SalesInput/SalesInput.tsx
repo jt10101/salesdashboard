@@ -1,3 +1,6 @@
+import { useAtom } from "jotai";
+import { refreshTriggerAtom } from "@/contexts/refreshAtom";
+
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -36,6 +39,7 @@ const InputSalesSheet = ({
   onOpenChange: (open: boolean) => void;
 }) => {
   const [openCal, setOpenCal] = useState(false);
+  const [, setRefreshTrigger] = useAtom(refreshTriggerAtom);
 
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [salesAmount, setSalesAmount] = useState("");
@@ -53,6 +57,8 @@ const InputSalesSheet = ({
     try {
       await addTransaction(data);
       toast.success("Sales Transaction successfully recorded");
+      setRefreshTrigger((prev) => prev + 1);
+      onOpenChange(false);
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);
