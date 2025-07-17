@@ -2,8 +2,10 @@
 const User = require("../models/User");
 const Hierarchy = require("../models/Hierarchy");
 const Transaction = require("../models/Transactions");
+const Target = require("../models/Targets");
 const { faker } = require("@faker-js/faker");
 const { bcryptPassword } = require("../utils/bcrypt");
+const { addMonths, lastDayOfMonth } = require("date-fns");
 
 const generateUsers = async () => {
   const usersData = [
@@ -104,6 +106,36 @@ const generateTransactions = async (users) => {
     console.log(err);
   }
 };
+
+const generateTargets = async (users) => {
+  const data = users.filter((a) => a.role === "IC");
+
+  const startDate = new Date(2023, 0, 1);
+  const targetData = [];
+
+  for (let user of data) {
+    for (let i = 0; i < 30; i++) {
+      const monthDate = addMonths(startDate, i);
+      const targetMonth = lastDayOfMonth(monthDate);
+
+      targetData.push({
+        salesPersonId: user._id,
+        targetMonth,
+        targetAmount: faker.number.int({ min: 50000, max: 200000 }),
+      });
+    }
+  }
+
+  try {
+    await Target.deleteMany({});
+    const newTarget = await Target.insertMany(targetData);
+    console.log(newTarget);
+    return newTarget;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 // Run Queries
 const dotenv = require("dotenv");
 dotenv.config();
@@ -121,7 +153,7 @@ const connect = async () => {
   const users = await generateUsers();
   await generateHierarchy(users);
   await generateTransactions(users);
-  // await Transaction.deleteMany({});
+  await generateTargets(users);
 
   // Disconnect our app from MongoDB after our queries run.
   await mongoose.disconnect();
