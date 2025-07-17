@@ -15,6 +15,8 @@ const mongoose = require("mongoose");
 const publicRouter = require("./routes/publicRoutes");
 const hierarchyRouter = require("./routes/hierarchyRoutes");
 const transactionRouter = require("./routes/transactionRoutes");
+const targetRouter = require("./routes/targetRoutes");
+
 const authenticator = require("./middleware/authenticator");
 
 // Connection to MongoDB
@@ -34,6 +36,7 @@ app.use("/api/public", publicRouter);
 app.use(authenticator);
 app.use("/api/hierarchy", hierarchyRouter);
 app.use("/api/transaction/", transactionRouter);
+app.use("/api/target", targetRouter);
 
 // Listener
 app.listen(3000, () => {
