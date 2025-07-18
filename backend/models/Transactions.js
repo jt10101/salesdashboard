@@ -24,6 +24,7 @@ const transactionsSchema = new mongoose.Schema(
     productType: {
       type: String,
       enum: ["Stocks", "Bonds", "Notes", "Mutual Funds"],
+      required: true,
     },
   },
   { timestamps: true }
