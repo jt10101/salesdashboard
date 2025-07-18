@@ -1,3 +1,6 @@
+import { useAtom } from "jotai";
+import { salesFigureAtom } from "@/contexts/salesFigureAtom";
+
 import { TrendingUp } from "lucide-react";
 import {
   Label,
@@ -38,6 +41,8 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export function TargetChart() {
+  const [salesFigure] = useAtom(salesFigureAtom);
+  const [target, setTarget] = useState("");
   const [, setLoading] = useState(true);
 
   useEffect(() => {
@@ -46,13 +51,8 @@ export function TargetChart() {
         setLoading(true);
         const response = await indexTarget();
         const rawData = response.data;
-        // const formattedData = transactionDataHandler(rawData);
-
-        // setAllFormattedData(formattedData);
-        // setAvailableYears(Object.keys(formattedData).sort().reverse());
-        // setChartData(formattedData[currentYearStr] || []);
-        // console.log(formattedData);
-        console.log(rawData);
+        setTarget(rawData);
+        // console.log(rawData);
       } catch (error) {
         console.error("Error loading targets", error);
       } finally {
@@ -60,7 +60,8 @@ export function TargetChart() {
       }
     };
     getTargets();
-  }, []);
+    // console.log(salesFigure);
+  }, [salesFigure]);
 
   return (
     <Card className="flex flex-col">

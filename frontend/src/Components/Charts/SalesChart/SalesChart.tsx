@@ -1,5 +1,6 @@
 import { useAtom } from "jotai";
 import { refreshTriggerAtom } from "@/contexts/refreshAtom";
+import { salesFigureAtom } from "@/contexts/salesFigureAtom";
 
 import { useEffect, useState } from "react";
 import { indexTransactions } from "@/services/transactionServices";
@@ -33,6 +34,7 @@ export const description = "A multiple line chart";
 
 const SalesChart = () => {
   const [refreshTrigger] = useAtom(refreshTriggerAtom);
+  const [, salesFigure] = useAtom(salesFigureAtom);
   const currentYearStr = new Date().getFullYear().toString();
   const [availableYears, setAvailableYears] = useState<string[]>([]);
   const [selectedYear, setSelectedYear] = useState<string>(currentYearStr);
@@ -62,9 +64,10 @@ const SalesChart = () => {
         const formattedData = transactionDataHandler(rawData);
 
         setAllFormattedData(formattedData);
+        salesFigure(formattedData);
         setAvailableYears(Object.keys(formattedData).sort().reverse());
         setChartData(formattedData[currentYearStr] || []);
-        console.log(formattedData);
+        // console.log(formattedData);
       } catch (error) {
         console.error("Error loading transactions", error);
       } finally {
