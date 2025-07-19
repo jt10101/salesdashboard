@@ -17,6 +17,7 @@ type Transaction = {
   transactionDate: string;
   salesAmount: number;
   salesCharge: number;
+  productType: string;
 };
 
 type MonthlyData = {
@@ -27,20 +28,19 @@ type MonthlyData = {
 
 type YearlyGroupedData = Record<string, MonthlyData[]>;
 
+const currentYear = new Date().getFullYear();
+const currentMonthIndex = new Date().getMonth();
+const yearMonthMap: Record<string, Record<string, MonthlyData>> = {};
+
 const transactionDataHandler = (
   transactions: Transaction[]
 ): YearlyGroupedData => {
-  const yearMonthMap: Record<string, Record<string, MonthlyData>> = {};
-
   let earliestYear = new Date().getFullYear();
   if (transactions.length > 0) {
     earliestYear = Math.min(
       ...transactions.map((tx) => Number(tx.transactionDate.slice(0, 4)))
     );
   }
-  const currentYear = new Date().getFullYear();
-  const currentMonthIndex = new Date().getMonth();
-
   for (const { transactionDate, salesAmount, salesCharge } of transactions) {
     if (!transactionDate) continue;
 
@@ -106,4 +106,13 @@ const transactionDataHandler = (
   return grouped;
 };
 
-export { transactionDataHandler };
+const targetDataHandler = (targetData, salesData) => {
+  const currentMonthTarget = targetData[0].targetAmount;
+  const currentMonthRevenue =
+    salesData[currentYear]?.[currentMonthIndex]?.revenue ?? 0;
+  if (currentMonthRevenue === 0) return 0;
+  const targetAttainment = (currentMonthRevenue / currentMonthTarget) * 360;
+  return targetAttainment;
+};
+
+export { transactionDataHandler, targetDataHandler };

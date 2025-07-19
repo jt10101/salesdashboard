@@ -1,5 +1,6 @@
 import { useAtom } from "jotai";
 import { salesFigureAtom } from "@/contexts/salesFigureAtom";
+import { targetDataHandler } from "@/utils/chartDataHandler";
 
 import { TrendingUp } from "lucide-react";
 import {
@@ -26,10 +27,6 @@ import { indexTarget } from "@/services/targetService";
 
 export const description = "A radial chart with text";
 
-const chartData = [
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-];
-
 const chartConfig = {
   visitors: {
     label: "Visitors",
@@ -41,18 +38,28 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export function TargetChart() {
-  const [salesFigure] = useAtom(salesFigureAtom);
-  const [target, setTarget] = useState("");
+  const [salesData] = useAtom(salesFigureAtom);
+  const [targetAttainment, setTargetAttainment] = useState<number>();
   const [, setLoading] = useState(true);
+
+  const chartData = [
+    {
+      browser: "safari",
+      visitors: Math.round(targetAttainment ?? 0),
+      fill: "var(--color-safari)",
+    },
+  ];
 
   useEffect(() => {
     const getTargets = async () => {
       try {
         setLoading(true);
         const response = await indexTarget();
-        const rawData = response.data;
-        setTarget(rawData);
-        // console.log(rawData);
+        const targetData = response.data;
+        const returnData = targetDataHandler(targetData, salesData);
+        setTargetAttainment(returnData);
+        // setTarget(data);
+        console.log(targetData);
       } catch (error) {
         console.error("Error loading targets", error);
       } finally {
@@ -60,8 +67,9 @@ export function TargetChart() {
       }
     };
     getTargets();
-    // console.log(salesFigure);
-  }, [salesFigure]);
+    // console.log(getTargets());
+    console.log(salesData);
+  }, [salesData]);
 
   return (
     <Card className="flex flex-col">
@@ -77,7 +85,7 @@ export function TargetChart() {
           <RadialBarChart
             data={chartData}
             startAngle={0}
-            endAngle={250}
+            endAngle={targetAttainment}
             innerRadius={80}
             outerRadius={110}
           >
