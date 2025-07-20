@@ -30,12 +30,13 @@ type YearlyGroupedData = Record<string, MonthlyData[]>;
 
 const currentYear = new Date().getFullYear();
 const currentMonthIndex = new Date().getMonth();
-const yearMonthMap: Record<string, Record<string, MonthlyData>> = {};
 
 const transactionDataHandler = (
   transactions: Transaction[]
 ): YearlyGroupedData => {
   let earliestYear = new Date().getFullYear();
+  const yearMonthMap: Record<string, Record<string, MonthlyData>> = {};
+
   if (transactions.length > 0) {
     earliestYear = Math.min(
       ...transactions.map((tx) => Number(tx.transactionDate.slice(0, 4)))
