@@ -58,6 +58,7 @@ const indexTransaction = async (req, res) => {
     //   id = req.params;
     // }
 
+    // const salesId = req.params.salesPersonId;
     const data = await Transaction.find({ salesPersonId: userId });
     res.status(200).json({ data });
   } catch (error) {

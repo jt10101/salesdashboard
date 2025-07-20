@@ -3,6 +3,7 @@ import { refreshTriggerAtom } from "@/contexts/refreshAtom";
 import { salesFigureAtom } from "@/contexts/salesFigureAtom";
 
 import { useEffect, useState } from "react";
+import { useParams } from "react-router";
 import { indexTransactions } from "@/services/transactionServices";
 import { transactionDataHandler } from "@/utils/chartDataHandler";
 import { TrendingUp } from "lucide-react";
@@ -55,11 +56,13 @@ const SalesChart = () => {
     },
   } satisfies ChartConfig;
 
+  const salesPersonId = useParams();
+
   useEffect(() => {
     const getTransactions = async () => {
       try {
         setLoading(true);
-        const response = await indexTransactions();
+        const response = await indexTransactions(salesPersonId);
         const rawData = response.data;
         const formattedData = transactionDataHandler(rawData);
 

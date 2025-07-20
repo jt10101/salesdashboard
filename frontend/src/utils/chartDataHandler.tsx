@@ -107,11 +107,36 @@ const transactionDataHandler = (
   return grouped;
 };
 
-const targetDataHandler = (targetData, salesData) => {
+const targetDataHandler = (
+  targetData: { targetAmount: number }[],
+  salesData: YearlyGroupedData
+): number => {
+  if (!targetData || targetData.length === 0) {
+    console.warn("No target data provided");
+    return 0;
+  }
   const currentMonthTarget = targetData[0].targetAmount;
-  const currentMonthRevenue =
-    salesData[currentYear]?.[currentMonthIndex]?.revenue ?? 0;
-  if (currentMonthRevenue === 0) return 0;
+  const currentYearStr = currentYear.toString();
+  const salesDataForYear = salesData[currentYearStr];
+
+  if (!salesDataForYear) {
+    console.warn(`No sales data found for year ${currentYearStr}`);
+    return 0;
+  }
+
+  const currentMonthData = salesDataForYear[currentMonthIndex];
+
+  if (!currentMonthData) {
+    console.warn(
+      `No sales data found for current month index ${currentMonthIndex}`
+    );
+    return 0;
+  }
+
+  const currentMonthRevenue = currentMonthData.revenue;
+
+  if (currentMonthTarget === 0) return 0;
+
   const targetAttainment = (currentMonthRevenue / currentMonthTarget) * 360;
   return targetAttainment;
 };
