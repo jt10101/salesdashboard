@@ -4,9 +4,24 @@ import {
   getTokenFromLocalStorage,
 } from "@/utils/tokenHandler";
 
-const UserContext = createContext();
+type User = {
+  _id: string;
+  firstName: string;
+  role: string;
+} | null;
 
-function UserProvider({ children }) {
+type UserContextType =
+  | {
+      user: User;
+      setUser: React.Dispatch<React.SetStateAction<User>>;
+      role: string;
+      setRole: React.Dispatch<React.SetStateAction<string>>;
+    }
+  | undefined;
+
+const UserContext = createContext<UserContextType>(undefined);
+
+const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [role, setRole] = useState("");
   const value = { user, setUser, role, setRole };
@@ -32,6 +47,6 @@ function UserProvider({ children }) {
   }, []);
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
-}
+};
 
 export { UserProvider, UserContext };

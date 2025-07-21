@@ -1,10 +1,4 @@
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardContent,
-  CardFooter,
-} from "../ui/card";
+import { Card, CardHeader, CardContent, CardFooter } from "../ui/card";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { toast } from "sonner";
