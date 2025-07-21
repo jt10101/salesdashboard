@@ -20,8 +20,10 @@ const SignInForm = () => {
 
   useEffect(() => {
     if (user) {
-      navigate("/dashboard");
       toast.success(`Welcome, ${user.firstName}`);
+      const { _id, role } = user;
+      if (role === "Supervisor") navigate("/dashboard");
+      if (role === "IC") navigate(`/${_id}`);
     }
   }, [user, navigate]);
 
