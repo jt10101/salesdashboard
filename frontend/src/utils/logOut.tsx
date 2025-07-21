@@ -3,9 +3,9 @@ export const logout = ({
   setRole,
   navigate,
 }: {
-  setUser: Function;
-  setRole: Function;
-  navigate: Function;
+  setUser: (user: null) => void;
+  setRole: (role: string) => void;
+  navigate: (path: string) => void;
 }) => {
   localStorage.removeItem("token");
   setUser(null);

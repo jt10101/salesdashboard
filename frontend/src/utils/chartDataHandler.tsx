@@ -26,7 +26,7 @@ type MonthlyData = {
   revenue: number;
 };
 
-type YearlyGroupedData = Record<string, MonthlyData[]>;
+export type YearlyGroupedData = Record<string, MonthlyData[]>;
 
 const currentYear = new Date().getFullYear();
 const currentMonthIndex = new Date().getMonth();

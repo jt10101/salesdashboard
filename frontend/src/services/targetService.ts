@@ -12,8 +12,10 @@ const indexTarget = async (salesPersonId) => {
       throw new Error(passData?.error || "Failed to fetch targets");
     }
     return passData;
-  } catch (err: any) {
-    throw new Error(err.message || "An unknown error occurred");
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      throw new Error(err.message || "An unknown error occurred");
+    }
   }
 };
 
