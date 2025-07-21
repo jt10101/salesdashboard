@@ -1,6 +1,7 @@
 import { useAtom } from "jotai";
 import { refreshTriggerAtom } from "@/contexts/refreshAtom";
 import { salesFigureAtom } from "@/contexts/salesFigureAtom";
+import type { YearlyGroupedData } from "@/utils/chartDataHandler";
 
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
@@ -32,17 +33,18 @@ import {
 import { Loader } from "@/utils/loader";
 
 export const description = "A multiple line chart";
+const currentYearStr = new Date().getFullYear().toString();
 
 const SalesChart = () => {
   const [refreshTrigger] = useAtom(refreshTriggerAtom);
   const [, salesFigure] = useAtom(salesFigureAtom);
-  const currentYearStr = new Date().getFullYear().toString();
   const [availableYears, setAvailableYears] = useState<string[]>([]);
   const [selectedYear, setSelectedYear] = useState<string>(currentYearStr);
   const [chartData, setChartData] = useState([]);
-  const [allFormattedData, setAllFormattedData] = useState<
-    Record<string, any[]>
-  >({});
+  const [allFormattedData, setAllFormattedData] = useState<YearlyGroupedData>(
+    {}
+  );
+
   const [loading, setLoading] = useState(true);
 
   const chartConfig = {
@@ -78,7 +80,7 @@ const SalesChart = () => {
       }
     };
     getTransactions();
-  }, [refreshTrigger, salesPersonId]);
+  }, [refreshTrigger, salesPersonId, salesFigure]);
 
   useEffect(() => {
     if (allFormattedData[selectedYear]) {
