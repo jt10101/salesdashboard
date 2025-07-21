@@ -9,7 +9,7 @@ import { ThemeProvider } from "./components/theme-provider";
 function App() {
   return (
     <>
-      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <ThemeProvider>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route element={<ProtectedRoutes />}>
