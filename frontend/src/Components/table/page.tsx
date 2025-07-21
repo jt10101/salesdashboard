@@ -1,4 +1,5 @@
-import { getColumns, Hierarchy } from "./columns";
+import { getColumns } from "./columns";
+import type { Hierarchy } from "./columns";
 import { DataTable } from "./data-table";
 import { indexHierarchy } from "@/services/hierarchyServices";
 import { useEffect, useState } from "react";
