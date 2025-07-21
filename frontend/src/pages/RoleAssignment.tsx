@@ -1,7 +1,7 @@
-import { DemoPage } from "@/components/table/page";
+import { RoleTable } from "@/components/table/page";
 
 const RoleAssignment = () => {
-  return <DemoPage />;
+  return <RoleTable />;
 };
 
 export { RoleAssignment };

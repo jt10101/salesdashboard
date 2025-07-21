@@ -3,7 +3,7 @@ import { DataTable } from "./data-table";
 import { indexHierarchy, indexSupervisors } from "@/services/hierarchyServices";
 import { useEffect, useState } from "react";
 
-const DemoPage = () => {
+const RoleTable = () => {
   const [index, setIndex] = useState<Hierarchy[]>([]);
   const [supervisors, setSupervisors] = useState<string[]>([]);
 
@@ -27,4 +27,4 @@ const DemoPage = () => {
   );
 };
 
-export { DemoPage };
+export { RoleTable };

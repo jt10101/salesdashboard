@@ -71,7 +71,7 @@ export function TargetChart() {
       }
     };
     getTargets();
-  }, [salesData, refreshTrigger]);
+  }, [salesData, refreshTrigger, salesPersonId]);
 
   return (
     <Card className="flex flex-col">
