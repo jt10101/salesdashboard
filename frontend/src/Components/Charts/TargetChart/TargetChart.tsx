@@ -2,6 +2,7 @@ import { useAtom } from "jotai";
 import { salesFigureAtom } from "@/contexts/salesFigureAtom";
 import { refreshTriggerAtom } from "@/contexts/refreshAtom";
 import { targetDataHandler } from "@/utils/chartDataHandler";
+import { useParams } from "react-router";
 
 // import { TrendingUp } from "lucide-react";
 import {
@@ -51,12 +52,13 @@ export function TargetChart() {
       fill: "var(--color-safari)",
     },
   ];
+  const { salesPersonId } = useParams();
 
   useEffect(() => {
     const getTargets = async () => {
       try {
         setLoading(true);
-        const response = await indexTarget();
+        const response = await indexTarget(salesPersonId);
         const targetData = response.data;
         const returnData = targetDataHandler(targetData, salesData);
         setTargetAttainment(returnData);

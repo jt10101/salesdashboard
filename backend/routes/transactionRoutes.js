@@ -7,7 +7,7 @@ const {
 
 //user routes
 router.post("/add", addTransaction);
-router.get("/index", indexTransaction);
-// router.get("/index/:salesPersonId", indexTransaction);
+// router.get("/index", indexTransaction);
+router.get("/index/:salesPersonId", indexTransaction);
 
 module.exports = router;

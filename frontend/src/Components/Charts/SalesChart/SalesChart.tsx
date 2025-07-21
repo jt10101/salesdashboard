@@ -56,7 +56,7 @@ const SalesChart = () => {
     },
   } satisfies ChartConfig;
 
-  const salesPersonId = useParams();
+  const { salesPersonId } = useParams();
 
   useEffect(() => {
     const getTransactions = async () => {
@@ -78,7 +78,7 @@ const SalesChart = () => {
       }
     };
     getTransactions();
-  }, [refreshTrigger]);
+  }, [refreshTrigger, salesPersonId]);
 
   useEffect(() => {
     if (allFormattedData[selectedYear]) {

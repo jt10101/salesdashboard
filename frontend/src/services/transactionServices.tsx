@@ -23,7 +23,7 @@ const addTransaction = async (data: object) => {
   }
 };
 
-const indexTransactions2 = async (salesPersonId) => {
+const indexTransactions = async (salesPersonId) => {
   const url_modifiers = `/transaction/index/${salesPersonId}`;
   const url = Service_BASE_URL + url_modifiers;
   try {
@@ -44,25 +44,25 @@ const indexTransactions2 = async (salesPersonId) => {
   }
 };
 
-const indexTransactions = async () => {
-  const url_modifiers = `/transaction/index/`;
-  const url = Service_BASE_URL + url_modifiers;
-  try {
-    const res = await fetch(url, {
-      headers: getAuthHeaders(),
-    });
-    const passData = await res.json();
-    if (!res.ok) {
-      throw new Error(passData?.error || "Failed to fetch transactions");
-    }
-    return passData;
-  } catch (err: unknown) {
-    if (err instanceof Error) {
-      throw new Error(err.message);
-    } else {
-      throw new Error("An unknown error occurred");
-    }
-  }
-};
+// const indexTransactions = async () => {
+//   const url_modifiers = `/transaction/index/`;
+//   const url = Service_BASE_URL + url_modifiers;
+//   try {
+//     const res = await fetch(url, {
+//       headers: getAuthHeaders(),
+//     });
+//     const passData = await res.json();
+//     if (!res.ok) {
+//       throw new Error(passData?.error || "Failed to fetch transactions");
+//     }
+//     return passData;
+//   } catch (err: unknown) {
+//     if (err instanceof Error) {
+//       throw new Error(err.message);
+//     } else {
+//       throw new Error("An unknown error occurred");
+//     }
+//   }
+// };
 
-export { addTransaction, indexTransactions, indexTransactions2 };
+export { addTransaction, indexTransactions };

@@ -46,24 +46,38 @@ const indexTransaction = async (req, res) => {
     if (!userId) {
       return res.status(401).json({ error: "Unauthorized: User not found" });
     }
-
-    // const role = req.user?.role;
-    // let id;
-
-    // if (role === "IC") {
-    //   id = userId;
-    // }
-
-    // if (role === "Supervisor") {
-    //   id = req.params;
-    // }
-
-    // const salesId = req.params.salesPersonId;
-    const data = await Transaction.find({ salesPersonId: userId });
+    const salesId = req.params.salesPersonId;
+    const data = await Transaction.find({ salesPersonId: salesId });
     res.status(200).json({ data });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
+
+// const indexTransaction = async (req, res) => {
+//   try {
+//     const userId = req.user?._id;
+//     if (!userId) {
+//       return res.status(401).json({ error: "Unauthorized: User not found" });
+//     }
+
+//     // const role = req.user?.role;
+//     // let id;
+
+//     // if (role === "IC") {
+//     //   id = userId;
+//     // }
+
+//     // if (role === "Supervisor") {
+//     //   id = req.params;
+//     // }
+
+//     // const salesId = req.params.salesPersonId;
+//     const data = await Transaction.find({ salesPersonId: userId });
+//     res.status(200).json({ data });
+//   } catch (error) {
+//     res.status(500).json({ error: error.message });
+//   }
+// };
 
 module.exports = { addTransaction, indexTransaction };

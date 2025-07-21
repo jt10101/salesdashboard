@@ -1,7 +1,7 @@
 import { Service_BASE_URL, getAuthHeaders } from "./configServices";
 
-const indexTarget = async () => {
-  const url_modifiers = "/target/index";
+const indexTarget = async (salesPersonId) => {
+  const url_modifiers = `/target/index/${salesPersonId}`;
   const url = Service_BASE_URL + url_modifiers;
   try {
     const res = await fetch(url, {
