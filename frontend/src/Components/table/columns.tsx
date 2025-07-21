@@ -1,6 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { ChangeEvent } from "react";
 import { toast } from "sonner";
+import { changeHierarchy } from "@/services/hierarchyServices";
 
 export type Hierarchy = {
   salesPersonId: string;
@@ -10,37 +10,40 @@ export type Hierarchy = {
 };
 
 export const getColumns = (
-  supervisorOptions: string[]
+  supervisorOptions: { id: string; name: string }[]
 ): ColumnDef<Hierarchy>[] => [
   {
-    accessorKey: "salesPersonId",
-    header: "Employee ID",
-  },
-  {
     accessorKey: "salesPersonName",
-    header: "Employee Name",
+    header: "Salesperson",
   },
   {
     accessorKey: "supervisorName",
     header: "Supervisor",
     cell: ({ row }) => {
-      const currentValue = row.original.supervisorName;
+      const currentSupervisorId = row.original.supervisorId;
+      const salesPersonId = row.original.salesPersonId;
 
-      const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
-        const newValue = e.target.value;
-
-        toast.success(`Supervisor changed to ${newValue}`);
+      const handleChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const newSupervisorId = e.target.value;
+        try {
+          await changeHierarchy(newSupervisorId, salesPersonId);
+          toast.success("Supervisor changed successfully");
+        } catch (err) {
+          toast.error(
+            err instanceof Error ? err.message : "Failed to change supervisor"
+          );
+        }
       };
 
       return (
         <select
-          value={currentValue}
+          value={currentSupervisorId}
           onChange={handleChange}
-          className="border border-gray-300 rounded p-1"
+          className="border border-gray-300 rounded px-2 py-1"
         >
-          {supervisorOptions.map((name) => (
-            <option key={name} value={name}>
-              {name}
+          {supervisorOptions.map((sup) => (
+            <option key={sup.id} value={sup.id}>
+              {sup.name}
             </option>
           ))}
         </select>

@@ -1,23 +1,34 @@
 import { getColumns, Hierarchy } from "./columns";
 import { DataTable } from "./data-table";
-import { indexHierarchy, indexSupervisors } from "@/services/hierarchyServices";
+import { indexHierarchy } from "@/services/hierarchyServices";
 import { useEffect, useState } from "react";
 
 const RoleTable = () => {
   const [index, setIndex] = useState<Hierarchy[]>([]);
-  const [supervisors, setSupervisors] = useState<string[]>([]);
+  const [supervisors, setSupervisors] = useState<
+    { id: string; name: string }[]
+  >([]);
 
   useEffect(() => {
     const getHierarchy = async () => {
       const response = await indexHierarchy();
-      setIndex(response.data);
+      const hierarchyData = response.data;
+
+      setIndex(hierarchyData);
+
+      const uniqueSupervisorsMap = new Map();
+      for (const entry of hierarchyData) {
+        uniqueSupervisorsMap.set(entry.supervisorId, {
+          id: entry.supervisorId,
+          name: entry.supervisorName,
+        });
+      }
+
+      const uniqueSupervisors = Array.from(uniqueSupervisorsMap.values());
+      setSupervisors(uniqueSupervisors);
     };
-    const getSupervisors = async () => {
-      const response = await indexSupervisors();
-      setSupervisors(response.data);
-    };
+
     getHierarchy();
-    getSupervisors();
   }, []);
 
   return (

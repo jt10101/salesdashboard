@@ -23,8 +23,8 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({
   columns,
   data,
-  supervisors = [],
-}: DataTableProps<TData, TValue>) {
+}: // supervisors = [],
+DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
     columns,

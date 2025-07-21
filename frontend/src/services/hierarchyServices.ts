@@ -48,4 +48,23 @@ const indexEmployees = async () => {
   }
 };
 
-export { indexHierarchy, indexSupervisors, indexEmployees };
+const changeHierarchy = async (newSupervisorId, salesPersonId) => {
+  const url_modifiers = "/hierarchy/change"; // EDIT THIS PART
+  const url = Service_BASE_URL + url_modifiers;
+
+  try {
+    const resData = await fetch(url, {
+      method: "PUT",
+      headers: getAuthHeaders(),
+      body: JSON.stringify({
+        salesPersonId,
+        newSupervisorId,
+      }),
+    });
+    const passData = await resData.json();
+    return passData;
+  } catch (err) {
+    throw new Error(`Error: ${err}`);
+  }
+};
+export { indexHierarchy, indexSupervisors, indexEmployees, changeHierarchy };

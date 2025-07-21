@@ -34,6 +34,21 @@ const indexHierarchy = async (req, res) => {
   }
 };
 
+const changeHierarchy = async (req, res) => {
+  const { salesPersonId, newSupervisorId } = req.body;
+  try {
+    const data = await Hierarchy.findOneAndUpdate(
+      { salesPersonId },
+      { supervisorId: newSupervisorId },
+      { new: true }
+    );
+
+    res.status(200).json({ data });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 const indexSupervisors = async (req, res) => {
   try {
     const data = await User.find({ role: "Supervisor" });
@@ -63,4 +78,9 @@ const indexEmployees = async (req, res) => {
   }
 };
 
-module.exports = { indexHierarchy, indexSupervisors, indexEmployees };
+module.exports = {
+  indexHierarchy,
+  indexSupervisors,
+  indexEmployees,
+  changeHierarchy,
+};
