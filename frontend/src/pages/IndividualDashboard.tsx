@@ -26,9 +26,11 @@ const IndividualDashboard = () => {
         textAlign="center"
         // onLetterAnimationComplete={handleAnimationComplete}
       />
-      <SalesChart />
-      <TargetChart />
-      <TransactionTable />
+      <div className="space-y-8 mt-6">
+        <SalesChart />
+        <TargetChart />
+        <TransactionTable />
+      </div>
     </div>
   );
 };
