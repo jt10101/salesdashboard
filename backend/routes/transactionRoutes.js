@@ -10,6 +10,6 @@ const {
 router.post("/add", addTransaction);
 // router.get("/index", indexTransaction);
 router.get("/index/:salesPersonId", indexTransaction);
-router.delete("/delete/:transactionId", deleteTransaction);
+router.delete("/:transactionId", deleteTransaction);
 
 module.exports = router;

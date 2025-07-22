@@ -44,6 +44,27 @@ const indexTransactions = async (salesPersonId) => {
   }
 };
 
+const deleteTransaction = async (transactionId) => {
+  const url_modifiers = `/transaction/${transactionId}`;
+  const url = Service_BASE_URL + url_modifiers;
+  try {
+    const res = await fetch(url, {
+      method: "DELETE",
+      headers: getAuthHeaders(),
+    });
+    const passData = await res.json();
+    if (!res.ok) {
+      throw new Error(passData?.error || "Failed to fetch transactions");
+    }
+    return passData;
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      throw new Error(err.message);
+    } else {
+      throw new Error("An unknown error occurred");
+    }
+  }
+};
 // const indexTransactions = async () => {
 //   const url_modifiers = `/transaction/index/`;
 //   const url = Service_BASE_URL + url_modifiers;
@@ -65,4 +86,4 @@ const indexTransactions = async (salesPersonId) => {
 //   }
 // };
 
-export { addTransaction, indexTransactions };
+export { addTransaction, indexTransactions, deleteTransaction };

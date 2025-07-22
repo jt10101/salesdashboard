@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import { indexTransactions } from "@/services/transactionServices";
+import {
+  indexTransactions,
+  deleteTransaction,
+} from "@/services/transactionServices";
 import type { Transaction } from "@/utils/chartDataHandler";
 
 import type {
@@ -127,9 +130,9 @@ export const columns: ColumnDef<Transaction>[] = [
   {
     id: "actions",
     enableHiding: false,
-    // cell: ({ row }) => {
-    //   const payment = row.original;
-    cell: () => {
+    cell: ({ row }) => {
+      const { transactionId } = row.original;
+      // cell: () => {
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -150,8 +153,17 @@ export const columns: ColumnDef<Transaction>[] = [
             {/* <DropdownMenuSeparator /> */}
             {/* <DropdownMenuItem>View customer</DropdownMenuItem> */}
             {/* <DropdownMenuItem>View payment details</DropdownMenuItem> */}
-            <DropdownMenuItem>Edit Transaction</DropdownMenuItem>
-            <DropdownMenuItem>Delete Transaction</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => console.log("test")}>
+              Edit Transaction
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={async () => {
+                // console.log(transactionId);
+                await deleteTransaction(transactionId);
+              }}
+            >
+              Delete Transaction
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -208,6 +220,10 @@ export function TransactionTable() {
 
     getTransactions();
   }, [salesPersonId]);
+
+  const handleDelete = async () => {
+    console.log("test");
+  };
 
   return (
     <div className="w-full">
