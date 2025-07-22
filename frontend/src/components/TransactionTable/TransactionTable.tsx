@@ -1,9 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import { useParams } from "react-router";
-import {
-  indexTransactions,
-  deleteTransaction,
-} from "@/services/transactionServices";
+import { indexTransactions } from "@/services/transactionServices";
 import type { Transaction } from "@/utils/chartDataHandler";
 
 import type {
@@ -20,19 +17,15 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+
+import { ArrowUpDown, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-// import { Checkbox } from "@/components/ui/checkbox";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-// import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -42,7 +35,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-export const columns: ColumnDef<Transaction>[] = [
+import { ActionCell } from "../ActionCell";
+
+export const createColumns = (
+  onDeleted: () => void
+): ColumnDef<Transaction>[] => [
   {
     accessorKey: "salesPersonName",
     header: "Salesperson Name",
@@ -53,17 +50,15 @@ export const columns: ColumnDef<Transaction>[] = [
 
   {
     accessorKey: "transactionDate",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Transaction Date
-          <ArrowUpDown />
-        </Button>
-      );
-    },
+    header: ({ column }) => (
+      <Button
+        variant="ghost"
+        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+      >
+        Transaction Date
+        <ArrowUpDown />
+      </Button>
+    ),
     cell: ({ row }) => {
       const date: Date = row.getValue("transactionDate");
       const formatted = date.toLocaleDateString("en-SG", {
@@ -81,33 +76,15 @@ export const columns: ColumnDef<Transaction>[] = [
       <div className="capitalize">{row.getValue("productType")}</div>
     ),
   },
-  //   {
-  //     accessorKey: "email",
-  //     header: ({ column }) => {
-  //       return (
-  //         <Button
-  //           variant="ghost"
-  //           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-  //         >
-  //           Email
-  //           <ArrowUpDown />
-  //         </Button>
-  //       );
-  //     },
-  //     cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
-  //   },
   {
     accessorKey: "salesAmount",
     header: () => <div className="text-right">Sales Amount</div>,
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("salesAmount"));
-
-      // Format the amount as a dollar amount
       const formatted = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "SGD",
       }).format(amount);
-
       return <div className="text-right font-medium">{formatted}</div>;
     },
   },
@@ -116,14 +93,11 @@ export const columns: ColumnDef<Transaction>[] = [
     header: () => <div className="text-right">Sales Charge</div>,
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("salesCharge"));
-
-      // Format number to show percentage
       const formatted = new Intl.NumberFormat("en-US", {
         style: "percent",
         minimumFractionDigits: 0,
         maximumFractionDigits: 2,
       }).format(amount);
-
       return <div className="text-right font-medium">{formatted}</div>;
     },
   },
@@ -131,42 +105,7 @@ export const columns: ColumnDef<Transaction>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const { transactionId } = row.original;
-      // cell: () => {
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-
-            {/* <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
-            >
-              Copy payment ID
-            </DropdownMenuItem> */}
-            {/* <DropdownMenuSeparator /> */}
-            {/* <DropdownMenuItem>View customer</DropdownMenuItem> */}
-            {/* <DropdownMenuItem>View payment details</DropdownMenuItem> */}
-            <DropdownMenuItem onClick={() => console.log("test")}>
-              Edit Transaction
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              onClick={async () => {
-                // console.log(transactionId);
-                await deleteTransaction(transactionId);
-              }}
-            >
-              Delete Transaction
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
+      return <ActionCell row={row} onDeleted={onDeleted} />;
     },
   },
 ];
@@ -177,6 +116,34 @@ export function TransactionTable() {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [data, setData] = useState<Transaction[]>([]);
+
+  const { salesPersonId } = useParams();
+
+  const fetchTransactions = useCallback(async () => {
+    try {
+      const response = await indexTransactions(salesPersonId);
+      const parsed: Transaction[] = response.data.map((t) => ({
+        transactionId: t._id,
+        salesPersonName: `${t.salesPersonId.firstName} ${t.salesPersonId.lastName}`,
+        transactionDate: new Date(t.transactionDate),
+        salesCharge: t.salesCharge,
+        salesAmount: t.salesAmount,
+        productType: t.productType,
+      }));
+      setData(parsed);
+    } catch (error) {
+      console.error("Error loading transactions", error);
+    }
+  }, [salesPersonId]);
+
+  useEffect(() => {
+    fetchTransactions();
+  }, [fetchTransactions]);
+
+  const columns = useMemo(
+    () => createColumns(fetchTransactions),
+    [fetchTransactions]
+  );
 
   const table = useReactTable({
     data,
@@ -198,44 +165,9 @@ export function TransactionTable() {
     },
   });
 
-  const { salesPersonId } = useParams();
-  useEffect(() => {
-    const getTransactions = async () => {
-      try {
-        const response = await indexTransactions(salesPersonId);
-        const parsed: Transaction[] = response.data.map((t) => ({
-          transactionId: t._id,
-          salesPersonName: `${t.salesPersonId.firstName} ${t.salesPersonId.lastName}`,
-          transactionDate: new Date(t.transactionDate),
-          salesCharge: t.salesCharge,
-          salesAmount: t.salesAmount,
-          productType: t.productType,
-        }));
-        setData(parsed);
-        console.log(parsed);
-      } catch (error) {
-        console.error("Error loading transactions", error);
-      }
-    };
-
-    getTransactions();
-  }, [salesPersonId]);
-
-  const handleDelete = async () => {
-    console.log("test");
-  };
-
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
-        {/* <Input
-          placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        /> */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
@@ -246,20 +178,16 @@ export function TransactionTable() {
             {table
               .getAllColumns()
               .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
+              .map((column) => (
+                <DropdownMenuCheckboxItem
+                  key={column.id}
+                  className="capitalize"
+                  checked={column.getIsVisible()}
+                  onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                >
+                  {column.id}
+                </DropdownMenuCheckboxItem>
+              ))}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
@@ -268,18 +196,16 @@ export function TransactionTable() {
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
@@ -314,28 +240,22 @@ export function TransactionTable() {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        {/* <div className="text-muted-foreground flex-1 text-sm">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div> */}
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Next
-          </Button>
-        </div>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          Previous
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          Next
+        </Button>
       </div>
     </div>
   );
