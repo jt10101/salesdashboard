@@ -47,7 +47,10 @@ const indexTransaction = async (req, res) => {
       return res.status(401).json({ error: "Unauthorized: User not found" });
     }
     const salesId = req.params.salesPersonId;
-    const data = await Transaction.find({ salesPersonId: salesId });
+    const data = await Transaction.find({ salesPersonId: salesId }).populate(
+      "salesPersonId",
+      "firstName lastName"
+    );
     res.status(200).json({ data });
   } catch (error) {
     res.status(500).json({ error: error.message });

@@ -65,7 +65,10 @@ const SalesChart = () => {
       try {
         setLoading(true);
         const response = await indexTransactions(salesPersonId);
-        const rawData = response.data;
+        const rawData = response.data.map((tx) => ({
+          ...tx,
+          transactionDate: new Date(tx.transactionDate),
+        }));
         const formattedData = transactionDataHandler(rawData);
 
         setAllFormattedData(formattedData);

@@ -1,6 +1,67 @@
+// const data: Transaction[] = [
+//   {
+//     salesPersonName: "success",
+//     transactionDate: new Date(2024, 11, 25),
+//     salesCharge: 0.6,
+//     salesAmount: 100000,
+//     productType: "Bonds",
+//   },
+//   {
+//     salesPersonName: "success",
+//     transactionDate: new Date(2024, 11, 25),
+//     salesCharge: 0.6,
+//     salesAmount: 100000,
+//     productType: "Bonds",
+//   },
+//   {
+//     salesPersonName: "success",
+//     transactionDate: new Date(2024, 11, 25),
+//     salesCharge: 0.6,
+//     salesAmount: 100000,
+//     productType: "Bonds",
+//   },
+//   {
+//     salesPersonName: "success",
+//     transactionDate: new Date(2024, 11, 25),
+//     salesCharge: 0.6,
+//     salesAmount: 100000,
+//     productType: "Bonds",
+//   },
+//   {
+//     salesPersonName: "success",
+//     transactionDate: new Date(2024, 12, 25),
+//     salesCharge: 0.6,
+//     salesAmount: 100000,
+//     productType: "Bonds",
+//   },
+//   {
+//     salesPersonName: "processing",
+//     transactionDate: new Date(2024, 11, 27),
+//     salesCharge: 0.6,
+//     salesAmount: 100000,
+//     productType: "Bonds",
+//   },
+//   {
+//     salesPersonName: "success",
+//     transactionDate: new Date(2024, 11, 30),
+//     salesCharge: 0.6,
+//     salesAmount: 100000,
+//     productType: "Bonds",
+//   },
+//   {
+//     salesPersonName: "failed",
+//     transactionDate: new Date(2024, 12, 30),
+//     salesCharge: 0.6,
+//     salesAmount: 100000,
+//     productType: "Bonds",
+//   },
+// ];
+// DATA PLACEHOLDER, to remove once API fetch is completed
+
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { indexTransactions } from "@/services/transactionServices";
+import type { Transaction } from "@/utils/chartDataHandler";
 
 import type {
   ColumnDef,
@@ -28,7 +89,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
+// import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -38,81 +99,13 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-const data: Transaction[] = [
-  {
-    id: "m5gr84i9",
-    salesPersonName: "success",
-    transactionDate: new Date(2024, 11, 25),
-    salesCharge: 0.6,
-    salesAmount: 100000,
-    productType: "Bonds",
-  },
-  {
-    id: "m5gr84i9",
-    salesPersonName: "success",
-    transactionDate: new Date(2024, 11, 25),
-    salesCharge: 0.6,
-    salesAmount: 100000,
-    productType: "Bonds",
-  },
-  {
-    id: "m5gr84i9",
-    salesPersonName: "success",
-    transactionDate: new Date(2024, 11, 25),
-    salesCharge: 0.6,
-    salesAmount: 100000,
-    productType: "Bonds",
-  },
-  {
-    id: "m5gr84i9",
-    salesPersonName: "success",
-    transactionDate: new Date(2024, 11, 25),
-    salesCharge: 0.6,
-    salesAmount: 100000,
-    productType: "Bonds",
-  },
-  {
-    id: "3u1reuv4",
-    salesPersonName: "success",
-    transactionDate: new Date(2024, 12, 25),
-    salesCharge: 0.6,
-    salesAmount: 100000,
-    productType: "Bonds",
-  },
-  {
-    id: "derv1ws0",
-    salesPersonName: "processing",
-    transactionDate: new Date(2024, 11, 27),
-    salesCharge: 0.6,
-    salesAmount: 100000,
-    productType: "Bonds",
-  },
-  {
-    id: "5kma53ae",
-    salesPersonName: "success",
-    transactionDate: new Date(2024, 11, 30),
-    salesCharge: 0.6,
-    salesAmount: 100000,
-    productType: "Bonds",
-  },
-  {
-    id: "bhqecj4p",
-    salesPersonName: "failed",
-    transactionDate: new Date(2024, 12, 30),
-    salesCharge: 0.6,
-    salesAmount: 100000,
-    productType: "Bonds",
-  },
-];
-
-export type Transaction = {
-  id: string;
-  salesPersonName: string;
-  transactionDate: Date;
-  salesCharge: number;
-  salesAmount: number;
-  productType: string;
-};
+// export type Transaction = {
+//   salesPersonName: string;
+//   transactionDate: Date;
+//   salesCharge: number;
+//   salesAmount: number;
+//   productType: string;
+// };
 
 export const columns: ColumnDef<Transaction>[] = [
   {
@@ -235,6 +228,7 @@ export function TransactionTable() {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
+  const [data, setData] = useState<Transaction[]>([]);
 
   const table = useReactTable({
     data,
@@ -256,40 +250,39 @@ export function TransactionTable() {
   });
 
   const { salesPersonId } = useParams();
-  //   useEffect(() => {
-  //     const getTransactions = async () => {
-  //       try {
-  //         // setLoading(true);
-  //         const response = await indexTransactions(salesPersonId);
-  //         const rawData = response.data;
-  //         // const formattedData = transactionDataHandler(rawData);
+  useEffect(() => {
+    const getTransactions = async () => {
+      try {
+        const response = await indexTransactions(salesPersonId);
+        const parsed: Transaction[] = response.data.map((t) => ({
+          //   ...t,
+          salesPersonName: `${t.salesPersonId.firstName} ${t.salesPersonId.lastName}`,
+          transactionDate: new Date(t.transactionDate),
+          salesCharge: t.salesCharge,
+          salesAmount: t.salesAmount,
+          productType: t.productType,
+        }));
+        setData(parsed);
+        console.log(parsed);
+      } catch (error) {
+        console.error("Error loading transactions", error);
+      }
+    };
 
-  //         // setAllFormattedData(formattedData);
-  //         // salesFigure(formattedData);
-  //         // setAvailableYears(Object.keys(formattedData).sort().reverse());
-  //         // setChartData(formattedData[currentYearStr] || []);
-  //         // console.log(formattedData);
-  //       } catch (error) {
-  //         console.error("Error loading transactions", error);
-  //       } finally {
-  //         // setLoading(false);
-  //       }
-  //     };
-  //     getTransactions();
-  //   }, [refreshTrigger, salesPersonId, salesFigure]);
-  // )
+    getTransactions();
+  }, [salesPersonId]);
 
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
-        <Input
+        {/* <Input
           placeholder="Filter emails..."
           value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("email")?.setFilterValue(event.target.value)
           }
           className="max-w-sm"
-        />
+        /> */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="ml-auto">
