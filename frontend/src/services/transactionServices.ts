@@ -44,6 +44,27 @@ const indexTransactions = async (salesPersonId) => {
   }
 };
 
+const indexTeamTransactions = async () => {
+  const url_modifiers = `/transaction/index/team`;
+  const url = Service_BASE_URL + url_modifiers;
+  try {
+    const res = await fetch(url, {
+      headers: getAuthHeaders(),
+    });
+    const passData = await res.json();
+    if (!res.ok) {
+      throw new Error(passData?.error || "Failed to fetch transactions");
+    }
+    return passData;
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      throw new Error(err.message);
+    } else {
+      throw new Error("An unknown error occurred");
+    }
+  }
+};
+
 const deleteTransaction = async (transactionId) => {
   const url_modifiers = `/transaction/${transactionId}`;
   const url = Service_BASE_URL + url_modifiers;
@@ -86,4 +107,9 @@ const deleteTransaction = async (transactionId) => {
 //   }
 // };
 
-export { addTransaction, indexTransactions, deleteTransaction };
+export {
+  addTransaction,
+  indexTransactions,
+  deleteTransaction,
+  indexTeamTransactions,
+};
