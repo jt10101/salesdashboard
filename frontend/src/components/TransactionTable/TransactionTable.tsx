@@ -127,9 +127,9 @@ export const columns: ColumnDef<Transaction>[] = [
   {
     id: "actions",
     enableHiding: false,
-    cell: ({ row }) => {
-      const payment = row.original;
-
+    // cell: ({ row }) => {
+    //   const payment = row.original;
+    cell: () => {
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
