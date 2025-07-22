@@ -57,6 +57,29 @@ const indexTransaction = async (req, res) => {
   }
 };
 
+const deleteTransaction = async (req, res) => {
+  try {
+    const userId = req.user?._id;
+    const deleteTransactionId = req.params.transactionId;
+
+    const transaction = await Transaction.findById(deleteTransactionId);
+    if (!transaction) {
+      return res.status(404).json({ error: "Transaction not found" });
+    }
+
+    const { salesPersonId } = transaction;
+
+    if (!userId || salesPersonId.toString() !== userId.toString()) {
+      return res.status(401).json({ error: "Unauthorized: Invalid User" });
+    }
+
+    const data = await Transaction.findByIdAndDelete(deleteTransactionId);
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 // const indexTransaction = async (req, res) => {
 //   try {
 //     const userId = req.user?._id;
@@ -83,4 +106,4 @@ const indexTransaction = async (req, res) => {
 //   }
 // };
 
-module.exports = { addTransaction, indexTransaction };
+module.exports = { addTransaction, indexTransaction, deleteTransaction };
