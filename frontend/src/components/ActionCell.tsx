@@ -32,6 +32,7 @@ type Props = {
 export function ActionCell({ row, onDeleted }: Props) {
   const { transactionId } = row.original;
   const [openDialogId, setOpenDialogId] = useAtom(deleteDialogAtom);
+
   const isOpen = openDialogId === transactionId;
 
   return (
@@ -48,7 +49,9 @@ export function ActionCell({ row, onDeleted }: Props) {
           <DropdownMenuItem onClick={() => console.log("Edit clicked")}>
             Edit Transaction
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => setOpenDialogId(transactionId)}>
+          <DropdownMenuItem
+            onClick={() => setOpenDialogId(transactionId ?? null)}
+          >
             Delete Transaction
           </DropdownMenuItem>
         </DropdownMenuContent>
