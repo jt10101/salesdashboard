@@ -38,54 +38,83 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-const data: Payment[] = [
+const data: Transaction[] = [
   {
     id: "m5gr84i9",
-    amount: 316,
     salesPersonName: "success",
     transactionDate: new Date(2024, 11, 25),
-    email: "ken99@example.com",
+    salesCharge: 0.6,
+    salesAmount: 100000,
+    productType: "Bonds",
+  },
+  {
+    id: "m5gr84i9",
+    salesPersonName: "success",
+    transactionDate: new Date(2024, 11, 25),
+    salesCharge: 0.6,
+    salesAmount: 100000,
+    productType: "Bonds",
+  },
+  {
+    id: "m5gr84i9",
+    salesPersonName: "success",
+    transactionDate: new Date(2024, 11, 25),
+    salesCharge: 0.6,
+    salesAmount: 100000,
+    productType: "Bonds",
+  },
+  {
+    id: "m5gr84i9",
+    salesPersonName: "success",
+    transactionDate: new Date(2024, 11, 25),
+    salesCharge: 0.6,
+    salesAmount: 100000,
+    productType: "Bonds",
   },
   {
     id: "3u1reuv4",
-    amount: 242,
     salesPersonName: "success",
     transactionDate: new Date(2024, 12, 25),
-    email: "Abe45@example.com",
+    salesCharge: 0.6,
+    salesAmount: 100000,
+    productType: "Bonds",
   },
   {
     id: "derv1ws0",
-    amount: 837,
     salesPersonName: "processing",
     transactionDate: new Date(2024, 11, 27),
-    email: "Monserrat44@example.com",
+    salesCharge: 0.6,
+    salesAmount: 100000,
+    productType: "Bonds",
   },
   {
     id: "5kma53ae",
-    amount: 874,
     salesPersonName: "success",
     transactionDate: new Date(2024, 11, 30),
-    email: "Silas22@example.com",
+    salesCharge: 0.6,
+    salesAmount: 100000,
+    productType: "Bonds",
   },
   {
     id: "bhqecj4p",
-    amount: 721,
     salesPersonName: "failed",
     transactionDate: new Date(2024, 12, 30),
-
-    email: "carmella@example.com",
+    salesCharge: 0.6,
+    salesAmount: 100000,
+    productType: "Bonds",
   },
 ];
 
-export type Payment = {
+export type Transaction = {
+  id: string;
   salesPersonName: string;
   transactionDate: Date;
-  id: string;
-  amount: number;
-  email: string;
+  salesCharge: number;
+  salesAmount: number;
+  productType: string;
 };
 
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<Transaction>[] = [
   {
     accessorKey: "salesPersonName",
     header: "Salesperson Name",
@@ -118,30 +147,53 @@ export const columns: ColumnDef<Payment>[] = [
     },
   },
   {
-    accessorKey: "email",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Email
-          <ArrowUpDown />
-        </Button>
-      );
-    },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
+    accessorKey: "productType",
+    header: "Product Type",
+    cell: ({ row }) => (
+      <div className="capitalize">{row.getValue("productType")}</div>
+    ),
   },
+  //   {
+  //     accessorKey: "email",
+  //     header: ({ column }) => {
+  //       return (
+  //         <Button
+  //           variant="ghost"
+  //           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+  //         >
+  //           Email
+  //           <ArrowUpDown />
+  //         </Button>
+  //       );
+  //     },
+  //     cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
+  //   },
   {
-    accessorKey: "amount",
-    header: () => <div className="text-right">Amount</div>,
+    accessorKey: "salesAmount",
+    header: () => <div className="text-right">Sales Amount</div>,
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"));
+      const amount = parseFloat(row.getValue("salesAmount"));
 
       // Format the amount as a dollar amount
       const formatted = new Intl.NumberFormat("en-US", {
         style: "currency",
-        currency: "USD",
+        currency: "SGD",
+      }).format(amount);
+
+      return <div className="text-right font-medium">{formatted}</div>;
+    },
+  },
+  {
+    accessorKey: "salesCharge",
+    header: () => <div className="text-right">Sales Charge</div>,
+    cell: ({ row }) => {
+      const amount = parseFloat(row.getValue("salesCharge"));
+
+      // Format number to show percentage
+      const formatted = new Intl.NumberFormat("en-US", {
+        style: "percent",
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2,
       }).format(amount);
 
       return <div className="text-right font-medium">{formatted}</div>;
@@ -316,10 +368,10 @@ export function TransactionTable() {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="text-muted-foreground flex-1 text-sm">
+        {/* <div className="text-muted-foreground flex-1 text-sm">
           {table.getFilteredSelectedRowModel().rows.length} of{" "}
           {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div>
+        </div> */}
         <div className="space-x-2">
           <Button
             variant="outline"
