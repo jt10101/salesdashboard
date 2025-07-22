@@ -2,6 +2,7 @@ import { SalesChart } from "@/components/Charts/SalesChart/SalesChart";
 import { TargetChart } from "@/components/Charts/TargetChart/TargetChart";
 import { UserContext } from "@/contexts/UserContext";
 import { useContext } from "react";
+import { TransactionTable } from "@/components/TransactionTable/TransactionTable";
 
 import SplitText from "@/components/SplitText/SplitText";
 
@@ -27,6 +28,7 @@ const IndividualDashboard = () => {
       />
       <SalesChart />
       <TargetChart />
+      <TransactionTable />
     </div>
   );
 };

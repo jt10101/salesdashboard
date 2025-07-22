@@ -141,4 +141,85 @@ const targetDataHandler = (
   return targetAttainment;
 };
 
+// const transactionTableHandler = (
+//   transactions: Transaction[]
+// ): YearlyGroupedData => {
+//   let earliestYear = new Date().getFullYear();
+//   const yearMonthMap: Record<string, Record<string, MonthlyData>> = {};
+
+//   if (transactions.length > 0) {
+//     earliestYear = Math.min(
+//       ...transactions.map((tx) => Number(tx.transactionDate.slice(0, 4)))
+//     );
+//   }
+//   for (const {
+//     transactionDate,
+//     salesAmount,
+//     salesCharge,
+//     productType,
+//   } of transactions) {
+//     if (!transactionDate) continue;
+
+//     const year = transactionDate.slice(0, 4);
+//     const monthKey = transactionDate.slice(5, 7);
+//     const month = monthMap[monthKey];
+//     if (!month) continue;
+
+//     if (!yearMonthMap[year]) {
+//       yearMonthMap[year] = {};
+//     }
+//     if (!yearMonthMap[year][month]) {
+//       yearMonthMap[year][month] = { month, salesAmount: 0, revenue: 0 };
+//     }
+
+//     yearMonthMap[year][month].salesAmount += salesAmount;
+//     yearMonthMap[year][month].revenue += salesAmount * salesCharge;
+//   }
+
+//   const grouped: YearlyGroupedData = {};
+
+//   for (let year = earliestYear; year <= currentYear; year++) {
+//     const yearStr = year.toString();
+//     grouped[yearStr] = [];
+
+//     const orderedMonthEntries = Object.entries(monthMap).sort(
+//       ([a], [b]) => Number(a) - Number(b)
+//     );
+
+//     orderedMonthEntries.forEach(([monthKey, monthName]) => {
+//       const monthIndex = Number(monthKey) - 1;
+//       if (year === currentYear && monthIndex > currentMonthIndex) return;
+
+//       if (!yearMonthMap[yearStr]) {
+//         yearMonthMap[yearStr] = {};
+//       }
+
+//       const monthData = yearMonthMap[yearStr][monthName] ?? {
+//         month: monthName,
+//         salesAmount: 0,
+//         revenue: 0,
+//       };
+
+//       grouped[yearStr].push(monthData);
+//     });
+//   }
+
+//   // Reverse map from month name to month number for sorting
+//   const monthNameToKey = Object.entries(monthMap).reduce((acc, [key, name]) => {
+//     acc[name] = key;
+//     return acc;
+//   }, {} as Record<string, string>);
+
+//   // Sort each year's monthly data by month number
+//   for (const year in grouped) {
+//     grouped[year].sort((a, b) => {
+//       const monthA = monthNameToKey[a.month] ?? "00";
+//       const monthB = monthNameToKey[b.month] ?? "00";
+//       return Number(monthA) - Number(monthB);
+//     });
+//   }
+
+//   return grouped;
+// };
+
 export { transactionDataHandler, targetDataHandler };
