@@ -36,8 +36,10 @@ As an IC (AAI):
 
 ### Screengrabs of game
 
-1. Sign In Page
-   [Sign In page](README_images/signin_page.png)
+- Sign In Page![Sign In page](README_images/signin_page.png)
+- Role Assignment![Role Assignment](README_images/role_assignment.png)
+- Dashboard View![dashboard](README_images/dashboard.png)
+- Input Sales![Sales Input](README_images/inputsales.png)
 
 ## Technologies Used
 
@@ -62,3 +64,6 @@ As an IC (AAI):
 ## References
 
 - Shadcn (https://ui.shadcn.com/docs/installation)
+- Tailwinds (https://tailwindcss.com/docs/installation/using-vite)
+- ReactBits (https://reactbits.dev/components/)
+- Jotai (https://jotai.org/docs)
