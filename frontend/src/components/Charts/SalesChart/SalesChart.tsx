@@ -64,6 +64,7 @@ const SalesChart = () => {
     const getTransactions = async () => {
       try {
         setLoading(true);
+
         const response = await indexTransactions(salesPersonId);
         const rawData = response.data.map((tx) => ({
           ...tx,

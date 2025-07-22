@@ -80,6 +80,28 @@ const deleteTransaction = async (req, res) => {
   }
 };
 
+const indexTeamTransaction = async (req, res) => {
+  try {
+    const user = req.user;
+    if (!user || !user._id) {
+      return res.status(401).json({ error: "Unauthorized: Unauthorized User" });
+    }
+    let data = await Hierarchy.find({ supervisorId: user._id }).populate(
+      "salesPersonId",
+      "firstName lastName"
+    );
+
+    const teamIds = data.map((e) => e.salesPersonId);
+
+    const resData = await Transaction.find({
+      salesPersonId: { $in: teamIds },
+    });
+    res.status(200).json({ resData });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 // const indexTransaction = async (req, res) => {
 //   try {
 //     const userId = req.user?._id;
@@ -106,4 +128,9 @@ const deleteTransaction = async (req, res) => {
 //   }
 // };
 
-module.exports = { addTransaction, indexTransaction, deleteTransaction };
+module.exports = {
+  addTransaction,
+  indexTransaction,
+  deleteTransaction,
+  indexTeamTransaction,
+};

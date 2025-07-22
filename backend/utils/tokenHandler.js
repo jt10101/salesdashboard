@@ -5,7 +5,7 @@ dotenv.config();
 
 const getTokenFromReq = (req) => {
   const authHeader = req.header("Authorization");
-  if (!authHeader || !authHeader.startsWith("Bearer")) {
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return null;
   }
   return authHeader.split(" ")[1];
