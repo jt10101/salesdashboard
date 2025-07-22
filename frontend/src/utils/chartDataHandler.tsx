@@ -14,6 +14,7 @@ const monthMap: Record<string, string> = {
 };
 
 export type Transaction = {
+  transactionId: string;
   salesPersonName: string;
   transactionDate: Date;
   salesAmount: number;

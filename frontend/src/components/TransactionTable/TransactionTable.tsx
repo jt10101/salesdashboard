@@ -1,63 +1,3 @@
-// const data: Transaction[] = [
-//   {
-//     salesPersonName: "success",
-//     transactionDate: new Date(2024, 11, 25),
-//     salesCharge: 0.6,
-//     salesAmount: 100000,
-//     productType: "Bonds",
-//   },
-//   {
-//     salesPersonName: "success",
-//     transactionDate: new Date(2024, 11, 25),
-//     salesCharge: 0.6,
-//     salesAmount: 100000,
-//     productType: "Bonds",
-//   },
-//   {
-//     salesPersonName: "success",
-//     transactionDate: new Date(2024, 11, 25),
-//     salesCharge: 0.6,
-//     salesAmount: 100000,
-//     productType: "Bonds",
-//   },
-//   {
-//     salesPersonName: "success",
-//     transactionDate: new Date(2024, 11, 25),
-//     salesCharge: 0.6,
-//     salesAmount: 100000,
-//     productType: "Bonds",
-//   },
-//   {
-//     salesPersonName: "success",
-//     transactionDate: new Date(2024, 12, 25),
-//     salesCharge: 0.6,
-//     salesAmount: 100000,
-//     productType: "Bonds",
-//   },
-//   {
-//     salesPersonName: "processing",
-//     transactionDate: new Date(2024, 11, 27),
-//     salesCharge: 0.6,
-//     salesAmount: 100000,
-//     productType: "Bonds",
-//   },
-//   {
-//     salesPersonName: "success",
-//     transactionDate: new Date(2024, 11, 30),
-//     salesCharge: 0.6,
-//     salesAmount: 100000,
-//     productType: "Bonds",
-//   },
-//   {
-//     salesPersonName: "failed",
-//     transactionDate: new Date(2024, 12, 30),
-//     salesCharge: 0.6,
-//     salesAmount: 100000,
-//     productType: "Bonds",
-//   },
-// ];
-// DATA PLACEHOLDER, to remove once API fetch is completed
-
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { indexTransactions } from "@/services/transactionServices";
@@ -98,14 +38,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
-// export type Transaction = {
-//   salesPersonName: string;
-//   transactionDate: Date;
-//   salesCharge: number;
-//   salesAmount: number;
-//   productType: string;
-// };
 
 export const columns: ColumnDef<Transaction>[] = [
   {
@@ -208,14 +140,18 @@ export const columns: ColumnDef<Transaction>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
+            <DropdownMenuSeparator />
+
+            {/* <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(payment.id)}
             >
               Copy payment ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            </DropdownMenuItem> */}
+            {/* <DropdownMenuSeparator /> */}
+            {/* <DropdownMenuItem>View customer</DropdownMenuItem> */}
+            {/* <DropdownMenuItem>View payment details</DropdownMenuItem> */}
+            <DropdownMenuItem>Edit Transaction</DropdownMenuItem>
+            <DropdownMenuItem>Delete Transaction</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -233,6 +169,7 @@ export function TransactionTable() {
   const table = useReactTable({
     data,
     columns,
+    getRowId: (row) => row.transactionId,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -255,7 +192,7 @@ export function TransactionTable() {
       try {
         const response = await indexTransactions(salesPersonId);
         const parsed: Transaction[] = response.data.map((t) => ({
-          //   ...t,
+          transactionId: t._id,
           salesPersonName: `${t.salesPersonId.firstName} ${t.salesPersonId.lastName}`,
           transactionDate: new Date(t.transactionDate),
           salesCharge: t.salesCharge,
