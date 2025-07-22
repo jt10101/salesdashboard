@@ -1,108 +1,62 @@
-# Ultimate Sales Dashboard
+# Project 4: MERN Full Stack Web Application
 
-[View dashboard here](https://ultimatesalestracker.netlify.app/)
+![alt text](images/gamelogo.png)
 
-- [Content](#content-&-features)
-- [Application Photos](#screengrabs-of-application)
-- [Wireframes](#wireframes)
-- [Planning](#planning)
-- [Credits](#credits)
+## Background and Context
 
-Slay
+Developed based on a connection's personal annecdote of having difficulty reporting and tracking sales figures of their employees. Currently, the user relies heavily of third party messaging applications (e.g. WhatsApp) for employees to post any sales transaction that may have happened over the course of the day. The biggest pain points of the user are as follows:
 
-## Content & Features
+- High degree of typos and mistakes
+- Inability to track employeee's performance vis a vis their targets in a singular app
+- Viewing of team level metrics require manual data manipulation on excel which can be extremely time consuming
+- Reporting of sales figures are in a group based chat which reduces employee privacy
 
-User-related
+## Designing the App
 
-- [x] Ability to Sign Up & Sign In with Validation Form
-- [x] Restricted NavBar based on SignIn
-- [x] See user's own profile
-- [x] Unauthorised if trying to access other's site
+### User Stories
 
-Product-related
+User Stories
 
-- [x] Public & logged in user can see all products
-- [x] Can look at other user's products they put up
-- [x] Can create & editing one's own listing and designs
+- AAU, I should be able to sign in and out of the application
+- AAU I want my username to be unique to me
+- AAU I expect to know what role I am assigned to when I log in (supervisor, individual contributor)
+- AAU I want to be able to change my password
+- AAU I want to be able to navigate easily through the application with the help of navigation bars
 
-Order-related
+As a supervisor (AAS):
 
-- [x] Validating Add to Cart to not exceed avail qty amount
+- AAS I want to be able to see an individual employee's sales data
+- AAS I want to be able to my whole team's sales data
+- AAS I want to be able to be able to assign/reassign employees to me so that I am able to see their sales data
 
-### Special Features
+As an IC (AAI):
 
-- [x] Intense Validation everywhere (FE, BE, DB)
-- [x] Managing product availability & inventory
-- [x] Private Routing to prevent Unauthorised access
+- AAI I want to be able to see my own sales data
+- AAI I want to be able to input sales data via a form
+- AAI I want to be able to edit any previously input sales data
+- AAI I want to be able to delete any sales data that may have been free-looked
 
-## Nomenclature / Terminology
+### Screengrabs of game
 
-## Screengrabs of Application
+1. Sign In Page
+   [Sign In page](README_images/signin_page.png)
 
-![Homepage](photosREADME/Homepage.png)
-![Signin](photosREADME/SignIn.png)
-![SignUp](photosREADME/SignUp.png)
-![EditProfile](photosREADME/EditProfile.png)
-![BuyAll](photosREADME/BuyAll.png)
-![SellUserPage](photosREADME/SellUserPage.png)
+## Technologies Used
 
-## Wireframes
+- MongoDB
+- ExpressJS
+- React
+- Typescript
 
-![Wireframe Sign Up](photosREADME/wireframeSignUp.png)
-![Wireframe Sign In](photosREADME/wireframeSignIn.png)
-![Wireframe Account Edit](photosREADME/wireframeAccountEdit.png)
-![Wireframe Buy All](photosREADME/wireframeBuyAll.png)
-![Wireframe Buy One](photosREADME/wireframeBuyOne.png)
-![Wireframe Sell All](photosREADME/wireframeSellAll.png)
-![Wireframe Sell User](photosREADME/wireframeSellUser.png)
-![Wireframe Sell One](photosREADME/wireframeSellOne.png)
-![Wireframe Cart](photosREADME/wireframeCart.png)
+## Libraries Used
 
-## Planning
+- shadcn (with Tailwind CSS)
+- Zod
+- React Bits
+- Jotai
 
-### FrontEnd Routes
+## Planned future stretchgoals
 
-![Frontend Routes](./photosREADME/FE_AllRoutes.png)
-
-### Backend Routes
-
-#### Routes for User Data
-
-![User Routes](./photosREADME/BE_REST_UserRoutes.png)
-
-##### Routes for Product Data
-
-/public/buy --> List view of items to buy for public
-/:userId/buy --> List view of items to buy for user
-/:userId/buy/cart --> List view of items to buy for user [cart state stored in BuyPage, retained in Local storage? or only show cart via dialog box?]
-/:userId/sell --> list view of items that user has put up to sell
-/:userId/sell/:productId --> see One Product that use has put up (with all subproducts - colour, size, design)
-
-##### Routes for Cart Data
-
-![Cart Routes](./photosREADME/BE_REST_CartRoutes.png)
-
-##### Routes for Transaction Data
-
-/:userId/buy/orders --> List view of transactions made by user
-/:userId/buy/:orderId --> see view of one transaction
-/:userId/sell/orders --> see view of all transactions
-/:userId/sell/:orderId --> see view of one transaction
-
-### Features & Splitting of Work
-
-![Splitting of Work 1](./photosREADME/WorkSplitting_1.png)
-![Splitting of Work 2](./photosREADME/WorkSplitting_2.png)
-![Splitting of Work 3](./photosREADME/WorkSplitting_3.png)
-
-## Credits
-
-Backend Techniques from:
-
-- [eCommerce Model Definitions](https://dev.to/ezzdinatef/ecommerce-database-design-1ggc)
-
-Frontend Techniques from:
-
-- [Private Route](https://medium.com/@bhairabpatra.iitd/private-routes-in-react-559a7d8d161f)
-- [MUI Controlled Form](https://dev.to/melissajlw/how-to-create-a-controlled-form-in-mui-material-ui-4gm9)
-- [Validation in Forms](https://muhimasri.com/blogs/mui-validation/)
+- Additional graphical charts for better analysis
+- Comment boxes
+- Notification bar (for Supervisor to know if any new transactions were made by team)
