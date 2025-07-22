@@ -58,3 +58,7 @@ As an IC (AAI):
 - Additional graphical charts for better analysis
 - Comment boxes
 - Notification bar (for Supervisor to know if any new transactions were made by team)
+
+## References
+
+- Shadcn (https://ui.shadcn.com/docs/installation)
