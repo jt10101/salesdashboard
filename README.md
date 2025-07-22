@@ -1,7 +1,5 @@
 # Project 4: MERN Full Stack Web Application
 
-![alt text](images/gamelogo.png)
-
 ## Background and Context
 
 Developed based on a connection's personal annecdote of having difficulty reporting and tracking sales figures of their employees. Currently, the user relies heavily of third party messaging applications (e.g. WhatsApp) for employees to post any sales transaction that may have happened over the course of the day. The biggest pain points of the user are as follows:
