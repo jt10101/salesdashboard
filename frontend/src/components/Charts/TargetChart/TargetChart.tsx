@@ -64,7 +64,7 @@ export function TargetChart() {
         const returnData = targetDataHandler(targetData, salesData);
         setTargetAttainment(returnData);
         // setTarget(data);
-        console.log(targetData);
+        // console.log(targetData);
       } catch (error) {
         console.error("Error loading targets", error);
       } finally {
