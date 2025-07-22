@@ -31,7 +31,10 @@ type Props = {
 
 export function ActionCell({ row, onDeleted }: Props) {
   const { transactionId } = row.original;
-  const [openDialogId, setOpenDialogId] = useAtom(deleteDialogAtom);
+  const [openDialogId, setOpenDialogId]: [
+    string | null,
+    (id: string | null) => void
+  ] = useAtom(deleteDialogAtom);
 
   const isOpen = openDialogId === transactionId;
 
