@@ -1,4 +1,5 @@
 const Transaction = require("../models/Transactions");
+const Hierarchy = require("../models/Hierarchy");
 
 const addTransaction = async (req, res) => {
   try {
@@ -96,7 +97,7 @@ const indexTeamTransaction = async (req, res) => {
     const resData = await Transaction.find({
       salesPersonId: { $in: teamIds },
     });
-    res.status(200).json({ resData });
+    res.status(200).json({ data: resData });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

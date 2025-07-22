@@ -24,7 +24,7 @@ const addTransaction = async (data: object) => {
 };
 
 const indexTransactions = async (salesPersonId) => {
-  const url_modifiers = `/transaction/index/${salesPersonId}`;
+  const url_modifiers = `/transaction/index/salesperson/${salesPersonId}`;
   const url = Service_BASE_URL + url_modifiers;
   try {
     const res = await fetch(url, {
