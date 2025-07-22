@@ -1,4 +1,4 @@
-import { RoleTable } from "@/components/RoleRable/page";
+import { RoleTable } from "@/components/RoleTable/page";
 const RoleAssignment = () => {
   return <RoleTable />;
 };

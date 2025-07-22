@@ -4,6 +4,9 @@ import { useContext, useEffect } from "react";
 import { UserContext } from "@/contexts/UserContext";
 import { indexEmployees } from "@/services/hierarchyServices";
 
+import { useAtom } from "jotai";
+import { refreshRoleAtom } from "@/contexts/refreshRoleAtom";
+
 import { InputSalesSheet } from "../SalesInput/SalesInput";
 import { Link, useNavigate } from "react-router";
 import {
@@ -19,6 +22,8 @@ import {
 const NavBar = () => {
   const [showSheet, setShowSheet] = useState(false);
   const [employees, setEmployees] = useState([]);
+  const [refresh] = useAtom(refreshRoleAtom);
+
   // const [test, setTest] = useState([]);
 
   const { user, setRole, setUser } = useContext(UserContext);
@@ -38,7 +43,7 @@ const NavBar = () => {
     };
 
     fetchEmployees();
-  }, []);
+  }, [refresh]);
 
   return (
     <NavigationMenu className="mt-4 ml-4 mr-4">

@@ -10,31 +10,34 @@ const RoleTable = () => {
     { id: string; name: string }[]
   >([]);
 
+  const fetchHierarchy = async () => {
+    const response = await indexHierarchy();
+    const hierarchyData = response.data;
+
+    setIndex(hierarchyData);
+
+    const uniqueSupervisorsMap = new Map();
+    for (const entry of hierarchyData) {
+      uniqueSupervisorsMap.set(entry.supervisorId, {
+        id: entry.supervisorId,
+        name: entry.supervisorName,
+      });
+    }
+
+    const uniqueSupervisors = Array.from(uniqueSupervisorsMap.values());
+    setSupervisors(uniqueSupervisors);
+  };
+
   useEffect(() => {
-    const getHierarchy = async () => {
-      const response = await indexHierarchy();
-      const hierarchyData = response.data;
-
-      setIndex(hierarchyData);
-
-      const uniqueSupervisorsMap = new Map();
-      for (const entry of hierarchyData) {
-        uniqueSupervisorsMap.set(entry.supervisorId, {
-          id: entry.supervisorId,
-          name: entry.supervisorName,
-        });
-      }
-
-      const uniqueSupervisors = Array.from(uniqueSupervisorsMap.values());
-      setSupervisors(uniqueSupervisors);
-    };
-
-    getHierarchy();
+    fetchHierarchy();
   }, []);
 
   return (
     <div className="container mx-auto py-10">
-      <DataTable columns={getColumns(supervisors)} data={index} />
+      <DataTable
+        columns={getColumns(supervisors, fetchHierarchy)}
+        data={index}
+      />
     </div>
   );
 };
