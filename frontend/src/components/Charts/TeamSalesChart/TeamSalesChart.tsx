@@ -73,7 +73,6 @@ const TeamSalesChart = () => {
         salesFigure(formattedData);
         setAvailableYears(Object.keys(formattedData).sort().reverse());
         setChartData(formattedData[currentYearStr] || []);
-        // console.log(formattedData);
       } catch (error) {
         console.error("Error loading transactions", error);
       } finally {

@@ -4,7 +4,6 @@ import { refreshTriggerAtom } from "@/contexts/refreshAtom";
 import { targetDataHandler } from "@/utils/chartDataHandler";
 import { useParams } from "react-router";
 
-// import { TrendingUp } from "lucide-react";
 import {
   Label,
   PolarGrid,
@@ -17,13 +16,11 @@ import {
   Card,
   CardContent,
   CardDescription,
-  // CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { ChartContainer } from "@/components/ui/chart";
 import type { ChartConfig } from "@/components/ui/chart";
-// import { Loader } from "@/utils/loader";
 
 import { useEffect, useState } from "react";
 import { indexTarget } from "@/services/targetService";
@@ -140,14 +137,6 @@ export function TargetChart() {
           </RadialBarChart>
         </ChartContainer>
       </CardContent>
-      {/* <CardFooter className="flex-col gap-2 text-sm">
-        <div className="flex items-center gap-2 leading-none font-medium">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="text-muted-foreground leading-none">
-          Showing total visitors for the last 6 months
-        </div>
-      </CardFooter> */}
     </Card>
   );
 }
